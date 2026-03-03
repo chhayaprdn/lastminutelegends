@@ -134,3 +134,5 @@ http-client.private.env.json
 .idea/**/misc.xml
 .idea/**/vcs.xml
 .idea/**/.gitignore
+.idea/**/encodings.xml
+.idea/**/remote-targets.xml
