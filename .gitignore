@@ -27,6 +27,8 @@
 hs_err_pid*
 replay_pid*
 
+target/**/*.txt
+
 
 # ======== VSCODE GITIGNORE (https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore) ========
 

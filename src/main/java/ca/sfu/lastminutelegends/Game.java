@@ -1,5 +1,7 @@
 package ca.sfu.lastminutelegends;
 
+import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.board.BoardLoader;
 import ca.sfu.lastminutelegends.systems.GameSystem;
 
 import javax.swing.*;
@@ -12,6 +14,7 @@ public class Game {
     private JFrame frame;
     private GameCanvas canvas;
     private List<GameSystem> systems;
+    private Board board;
     private int tick;
     
     private Game() {
@@ -38,6 +41,7 @@ public class Game {
             this.frame.setVisible(true);
         });
         
+        this.board = BoardLoader.loadBoard("/board.txt");
         loadSystems();
     }
     
