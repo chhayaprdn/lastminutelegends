@@ -13,8 +13,5 @@ public class GameCanvas extends JPanel {
         for (GameSystem system : Game.instance().getSystems()) {
             system.render(g);
         }
-        
-        g.setColor(Color.BLUE);
-        g.fillRect(50, 50, 50, 50);
     }
 }

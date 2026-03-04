@@ -2,6 +2,7 @@ package ca.sfu.lastminutelegends;
 
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.board.BoardLoader;
+import ca.sfu.lastminutelegends.systems.BoardRenderer;
 import ca.sfu.lastminutelegends.systems.GameSystem;
 
 import javax.swing.*;
@@ -63,7 +64,7 @@ public class Game {
     }
 
     private void loadSystems() {
-        
+        addSystem(new BoardRenderer(this.board));
     }
     
     private void addSystem(GameSystem system) {
