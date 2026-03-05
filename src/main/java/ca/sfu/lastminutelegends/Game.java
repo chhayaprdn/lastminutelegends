@@ -9,6 +9,16 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.lastminutelegends.entities.MovingEnemy;
+import ca.sfu.lastminutelegends.entities.Player;
+import ca.sfu.lastminutelegends.entities.Position;
+import ca.sfu.lastminutelegends.systems.EnemySystem;
+import ca.sfu.lastminutelegends.systems.EntityRenderer;
+import ca.sfu.lastminutelegends.systems.InputSystem;
+import ca.sfu.lastminutelegends.systems.PlayerSystem;
+
+import java.util.Arrays;
+
 public class Game {
     private static Game INSTANCE = null;
     
@@ -17,6 +27,9 @@ public class Game {
     private List<GameSystem> systems;
     private Board board;
     private int tick;
+    private Player player;
+    private List<MovingEnemy> enemies;
+    private InputSystem inputSystem;
     
     private Game() {
         this.systems = new ArrayList<>();
@@ -64,7 +77,19 @@ public class Game {
     }
 
     private void loadSystems() {
+        // Temporary spawn positions (we can later auto-detect Start/End from the board)
+        this.player = new Player(new Position(1, 6)); // near 'S' in board.txt
+        this.enemies = Arrays.asList(
+                new MovingEnemy(new Position(7, 1))     // demo enemy spawn
+        );
+
+        this.inputSystem = new InputSystem(this.canvas);
+
         addSystem(new BoardRenderer(this.board));
+        addSystem(this.inputSystem);
+        addSystem(new PlayerSystem(this.board, this.player, this.inputSystem));
+        addSystem(new EnemySystem(this.board, this.player, this.enemies));
+        addSystem(new EntityRenderer(this.player, this.enemies));
     }
     
     private void addSystem(GameSystem system) {
