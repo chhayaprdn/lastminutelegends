@@ -9,6 +9,16 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import ca.sfu.lastminutelegends.entities.MovingEnemy;
+import ca.sfu.lastminutelegends.entities.Player;
+import ca.sfu.lastminutelegends.entities.Position;
+import ca.sfu.lastminutelegends.systems.EnemySystem;
+import ca.sfu.lastminutelegends.systems.EntityRenderer;
+import ca.sfu.lastminutelegends.systems.InputSystem;
+import ca.sfu.lastminutelegends.systems.PlayerSystem;
+
+import java.util.Arrays;
+
 public class Game {
     private static Game INSTANCE = null;
     
@@ -17,6 +27,8 @@ public class Game {
     private List<GameSystem> systems;
     private Board board;
     private int tick;
+    private Player player;
+    private List<MovingEnemy> enemies;
     
     private Game() {
         this.systems = new ArrayList<>();
@@ -32,11 +44,12 @@ public class Game {
     }
 
     public void load() {
+        this.canvas = new GameCanvas();
+        
         SwingUtilities.invokeLater(() -> {
             this.frame = new JFrame("Last-Minute Legends");
             this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.frame.setSize(1600, 900);
-            this.canvas = new GameCanvas();
             this.frame.add(this.canvas);
             this.frame.setLocationRelativeTo(null);
             this.frame.setVisible(true);
@@ -64,7 +77,19 @@ public class Game {
     }
 
     private void loadSystems() {
+        // Temporary spawn positions (we can later auto-detect Start/End from the board)
+        this.player = new Player(new Position(1, 6)); // near 'S' in board.txt
+        this.enemies = Arrays.asList(
+                new MovingEnemy(new Position(7, 1))     // demo enemy spawn
+        );
+
+        InputSystem inputSystem = new InputSystem(this.canvas);
+
         addSystem(new BoardRenderer(this.board));
+        addSystem(inputSystem);
+        addSystem(new PlayerSystem(this.board, this.player, inputSystem));
+        addSystem(new EnemySystem(this.board, this.player, this.enemies));
+        addSystem(new EntityRenderer(this.player, this.enemies));
     }
     
     private void addSystem(GameSystem system) {
