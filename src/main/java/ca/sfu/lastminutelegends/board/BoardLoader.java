@@ -18,8 +18,7 @@ public class BoardLoader {
             }
             
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-                List<String> lines = reader.readAllLines();
-
+                List<String> lines = reader.lines().toList();
                 for (String line : lines) {
                     List<Cell> row = new ArrayList<>();
 
@@ -31,7 +30,7 @@ public class BoardLoader {
                             case '.' -> row.add(CellFactory.empty());
                             case 'R' -> row.add(CellFactory.regularReward());
                             default -> {
-                                System.err.println("Unexpected char in board file. Board file should only have '#', '.', 'S', and 'E' chars. Defaulting to empty cell.");
+                                System.err.println("Unexpected char '" + c + "' in board file. Defaulting to empty cell.");
                                 row.add(CellFactory.empty());
                             }
                         }
