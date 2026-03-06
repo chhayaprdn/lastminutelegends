@@ -27,6 +27,8 @@
 hs_err_pid*
 replay_pid*
 
+target/**/*.txt
+
 
 # ======== VSCODE GITIGNORE (https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore) ========
 
@@ -134,3 +136,5 @@ http-client.private.env.json
 .idea/**/misc.xml
 .idea/**/vcs.xml
 .idea/**/.gitignore
+.idea/**/encodings.xml
+.idea/**/remote-targets.xml
