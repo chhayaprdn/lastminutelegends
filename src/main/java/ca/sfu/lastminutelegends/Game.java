@@ -45,11 +45,12 @@ public class Game {
     }
 
     public void load() {
+        this.canvas = new GameCanvas();
+        
         SwingUtilities.invokeLater(() -> {
             this.frame = new JFrame("Last-Minute Legends");
             this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.frame.setSize(1600, 900);
-            this.canvas = new GameCanvas();
             this.frame.add(this.canvas);
             this.frame.setLocationRelativeTo(null);
             this.frame.setVisible(true);
