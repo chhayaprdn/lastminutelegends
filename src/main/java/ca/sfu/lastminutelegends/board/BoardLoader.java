@@ -29,6 +29,7 @@ public class BoardLoader {
                             case 'S' -> row.add(CellFactory.startPoint());
                             case 'E' -> row.add(CellFactory.endPoint());
                             case '.' -> row.add(CellFactory.empty());
+                            case 'R' -> row.add(CellFactory.regularReward());
                             default -> {
                                 System.err.println("Unexpected char in board file. Board file should only have '#', '.', 'S', and 'E' chars. Defaulting to empty cell.");
                                 row.add(CellFactory.empty());
