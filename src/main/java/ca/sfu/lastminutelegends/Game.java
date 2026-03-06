@@ -29,7 +29,6 @@ public class Game {
     private int tick;
     private Player player;
     private List<MovingEnemy> enemies;
-    private InputSystem inputSystem;
     
     private Game() {
         this.systems = new ArrayList<>();
@@ -84,11 +83,11 @@ public class Game {
                 new MovingEnemy(new Position(7, 1))     // demo enemy spawn
         );
 
-        this.inputSystem = new InputSystem(this.canvas);
+        InputSystem inputSystem = new InputSystem(this.canvas);
 
         addSystem(new BoardRenderer(this.board));
-        addSystem(this.inputSystem);
-        addSystem(new PlayerSystem(this.board, this.player, this.inputSystem));
+        addSystem(inputSystem);
+        addSystem(new PlayerSystem(this.board, this.player, inputSystem));
         addSystem(new EnemySystem(this.board, this.player, this.enemies));
         addSystem(new EntityRenderer(this.player, this.enemies));
     }
