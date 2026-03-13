@@ -3,6 +3,7 @@ package ca.sfu.lastminutelegends;
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.board.BoardLoader;
 import ca.sfu.lastminutelegends.systems.BoardRenderer;
+import ca.sfu.lastminutelegends.systems.CollisionDetectionSystem;
 import ca.sfu.lastminutelegends.systems.GameSystem;
 
 import javax.swing.*;
@@ -96,6 +97,7 @@ public class Game {
         addSystem(inputSystem);
         addSystem(new PlayerSystem(this.board, this.player, inputSystem));
         addSystem(new EnemySystem(this.board, this.player, this.enemies));
+        addSystem(new CollisionDetectionSystem(this.player, this.enemies));
         addSystem(new EntityRenderer(this.player, this.enemies));
     }
     
