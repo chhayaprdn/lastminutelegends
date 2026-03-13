@@ -13,5 +13,11 @@ public class GameCanvas extends JPanel {
         for (GameSystem system : Game.instance().getSystems()) {
             system.render(g);
         }
+
+        if (Game.instance().getState() == GameState.Lost) {
+            g.setColor(Color.RED);
+            g.setFont(new Font("Arial", Font.BOLD, 48));
+            g.drawString("YOU LOST", 550, 120);
+        }
     }
 }
