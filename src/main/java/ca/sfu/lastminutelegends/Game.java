@@ -29,10 +29,12 @@ public class Game {
     private int tick;
     private Player player;
     private List<MovingEnemy> enemies;
+    private GameState state;
     
     private Game() {
         this.systems = new ArrayList<>();
         this.tick = 0;
+        this.state = GameState.Menu;
     }
 
     public static Game instance() {
@@ -56,11 +58,16 @@ public class Game {
         });
         
         this.board = BoardLoader.loadBoard("/board.txt");
+        this.state = GameState.Playing;
         loadSystems();
     }
     
     public void loop() {
         Timer tickLoop = new Timer(100, _ -> {
+            if (this.state != GameState.Playing) {
+                return;
+            }
+
             for (GameSystem system : this.systems) {
                 system.tick(this.tick);
             }
@@ -98,5 +105,13 @@ public class Game {
     
     public List<GameSystem> getSystems() {
         return this.systems;
+    }
+
+    public GameState getState() {
+        return this.state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
     }
 }
