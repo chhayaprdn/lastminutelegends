@@ -33,7 +33,7 @@ public class MovingEnemy {
 
         for (Direction d : PRIORITY) {
             Position next = pos.move(d);
-            if (!isWalkable(board, next)) continue;
+            if (!board.isWalkable(next)) continue;
 
             int dist = next.manhattanDistance(playerPos);
             if (dist < bestDist) {
@@ -48,10 +48,4 @@ public class MovingEnemy {
         // If no valid move, enemy stays in place (e.g., cornered by walls).
     }
 
-    private boolean isWalkable(Board board, Position p) {
-        if (p.x < 0 || p.y < 0 || p.x >= board.getWidth() || p.y >= board.getHeight()) {
-            return false;
-        }
-        return board.getCell(p.x, p.y).isPassable();
-    }
 }
