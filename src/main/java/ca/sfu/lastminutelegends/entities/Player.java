@@ -30,15 +30,9 @@ public class Player {
         if (dir == null) return;
 
         Position next = pos.move(dir);
-        if (isWalkable(board, next)) {
+        if (board.isWalkable(next)) {
             pos = next;
         }
     }
 
-    private boolean isWalkable(Board board, Position p) {
-        if (p.x < 0 || p.y < 0 || p.x >= board.getWidth() || p.y >= board.getHeight()) {
-            return false;
-        }
-        return board.getCell(p.x, p.y).isPassable();
-    }
 }
