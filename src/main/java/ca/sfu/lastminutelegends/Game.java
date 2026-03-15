@@ -1,7 +1,9 @@
 package ca.sfu.lastminutelegends;
 
 import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.board.BoardLoader;
+import ca.sfu.lastminutelegends.board.BoardAssembler;
+import ca.sfu.lastminutelegends.board.BoardReader;
+import ca.sfu.lastminutelegends.entities.*;
 import ca.sfu.lastminutelegends.systems.BoardRenderer;
 import ca.sfu.lastminutelegends.systems.GameSystem;
 
@@ -9,9 +11,6 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import ca.sfu.lastminutelegends.entities.MovingEnemy;
-import ca.sfu.lastminutelegends.entities.Player;
-import ca.sfu.lastminutelegends.entities.Position;
 import ca.sfu.lastminutelegends.systems.EnemySystem;
 import ca.sfu.lastminutelegends.systems.EntityRenderer;
 import ca.sfu.lastminutelegends.systems.InputSystem;
@@ -29,6 +28,7 @@ public class Game {
     private int tick;
     private Player player;
     private List<MovingEnemy> enemies;
+    private List<Entity> entities = new ArrayList<>();
     
     private Game() {
         this.systems = new ArrayList<>();
@@ -55,7 +55,7 @@ public class Game {
             this.frame.setVisible(true);
         });
         
-        this.board = BoardLoader.loadBoard("/board.txt");
+        loadBoard();
         loadSystems();
     }
     
@@ -76,6 +76,17 @@ public class Game {
         renderLoop.start();
     }
 
+    private void loadBoard() {
+        BoardReader reader = new BoardReader("/board.txt");
+        BoardAssembler assembler = new BoardAssembler();
+        
+        reader.addObserver(assembler);
+        reader.addObserver(new RewardPlacer(this.entities));
+        reader.readBoard();
+        
+        this.board = assembler.getBoard();
+    }
+    
     private void loadSystems() {
         // Temporary spawn positions (we can later auto-detect Start/End from the board)
         this.player = new Player(new Position(1, 6)); // near 'S' in board.txt

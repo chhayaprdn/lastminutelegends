@@ -6,11 +6,9 @@ import java.util.Random;
 
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.board.Cell;
-import ca.sfu.lastminutelegends.board.RewardCell;
 import ca.sfu.lastminutelegends.entities.Player;
 import ca.sfu.lastminutelegends.entities.Position;
 import ca.sfu.lastminutelegends.reward.BonusReward;
-import ca.sfu.lastminutelegends.reward.RegularReward;
 import ca.sfu.lastminutelegends.reward.Reward;
 
 /**
@@ -31,28 +29,6 @@ public class RewardManager {
         this.bonusRewards = new ArrayList<>();
         this.board = board;
         this.random = new Random();
-        
-        // Initialize regular rewards from board
-        initializeRegularRewards();
-    }
-    
-    /**
-     * Find all regular rewards on the board and create Reward objects
-     */
-    private void initializeRegularRewards() {
-        for (int y = 0; y < board.getHeight(); y++) {
-            for (int x = 0; x < board.getWidth(); x++) {
-                Cell cell = board.getCell(x, y);
-                if (cell instanceof RewardCell) {
-                    RewardCell rewardCell = (RewardCell) cell;
-                    if (!rewardCell.isCollected()) {
-                        RegularReward reward = new RegularReward(new Position(x, y));
-                        regularRewards.add(reward);
-                    }
-                }
-            }
-        }
-        System.out.println("Initialized " + regularRewards.size() + " regular rewards");
     }
     
     /**
@@ -70,12 +46,6 @@ public class RewardManager {
                 reward.collect();
                 pointsEarned += reward.getPointValue();
                 collectedRegular.add(reward);
-                
-                // Update the board cell
-                Cell cell = board.getCell(playerPos.x, playerPos.y);
-                if (cell instanceof RewardCell) {
-                    ((RewardCell) cell).setCollected(true);
-                }
                 
                 System.out.println("Collected regular reward! +" + reward.getPointValue());
             }
