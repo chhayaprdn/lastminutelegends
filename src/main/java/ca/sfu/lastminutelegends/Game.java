@@ -16,8 +16,6 @@ import ca.sfu.lastminutelegends.systems.EntityRenderer;
 import ca.sfu.lastminutelegends.systems.InputSystem;
 import ca.sfu.lastminutelegends.systems.PlayerSystem;
 
-import java.util.Arrays;
-
 public class Game {
     private static Game INSTANCE = null;
     
@@ -27,7 +25,6 @@ public class Game {
     private Board board;
     private int tick;
     private Player player;
-    private List<MovingEnemy> enemies;
     private List<Entity> entities = new ArrayList<>();
     
     private Game() {
@@ -81,26 +78,20 @@ public class Game {
         BoardAssembler assembler = new BoardAssembler();
         
         reader.addObserver(assembler);
-        reader.addObserver(new RewardPlacer(this.entities));
+        reader.addObserver(new EntityPlacer());
         reader.readBoard();
         
         this.board = assembler.getBoard();
     }
     
     private void loadSystems() {
-        // Temporary spawn positions (we can later auto-detect Start/End from the board)
-        this.player = new Player(new Position(1, 6)); // near 'S' in board.txt
-        this.enemies = Arrays.asList(
-                new MovingEnemy(new Position(7, 1))     // demo enemy spawn
-        );
-
         InputSystem inputSystem = new InputSystem(this.canvas);
 
         addSystem(new BoardRenderer(this.board));
         addSystem(inputSystem);
         addSystem(new PlayerSystem(this.board, this.player, inputSystem));
-        addSystem(new EnemySystem(this.board, this.player, this.enemies));
-        addSystem(new EntityRenderer(this.player, this.enemies));
+        addSystem(new EnemySystem());
+        addSystem(new EntityRenderer());
     }
     
     private void addSystem(GameSystem system) {
@@ -109,5 +100,21 @@ public class Game {
     
     public List<GameSystem> getSystems() {
         return this.systems;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+    
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
     }
 }

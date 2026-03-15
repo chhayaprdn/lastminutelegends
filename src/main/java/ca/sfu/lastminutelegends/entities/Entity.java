@@ -1,5 +1,7 @@
 package ca.sfu.lastminutelegends.entities;
 
+import ca.sfu.lastminutelegends.board.Board;
+
 import java.awt.*;
 
 /**
@@ -8,11 +10,9 @@ import java.awt.*;
  */
 public abstract class Entity {
     protected Position position;
-    protected String symbol;
     
-    public Entity(Position position, String symbol) {
+    public Entity(Position position) {
         this.position = position;
-        this.symbol = symbol;
     }
     
     public Position getPosition() {
@@ -23,14 +23,10 @@ public abstract class Entity {
         this.position = position;
     }
     
-    public String getSymbol() {
-        return symbol;
-    }
-    
     /**
      * Called every game tick for entity behavior
      */
-    public void onTick() {
+    public void onTick(Board board, Player player) {
         // Default implementation does nothing
     }
     
@@ -38,11 +34,4 @@ public abstract class Entity {
      * Render the entity on the game canvas
      */
     public abstract void render(Graphics g, int cellSize, int offsetX, int offsetY);
-    
-    /**
-     * Check if this entity can be collected/removed
-     */
-    public boolean isCollectible() {
-        return false;
-    }
 }
