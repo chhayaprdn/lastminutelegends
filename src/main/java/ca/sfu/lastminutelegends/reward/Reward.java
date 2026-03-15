@@ -11,8 +11,8 @@ public abstract class Reward extends Entity {
     protected int pointValue;
     protected boolean collected;
     
-    public Reward(Position position, String symbol, int pointValue) {
-        super(position, symbol);
+    public Reward(Position position, int pointValue) {
+        super(position);
         this.pointValue = pointValue;
         this.collected = false;
     }
@@ -27,11 +27,6 @@ public abstract class Reward extends Entity {
     
     public void collect() {
         this.collected = true;
-    }
-    
-    @Override
-    public boolean isCollectible() {
-        return !collected;
     }
     
     @Override

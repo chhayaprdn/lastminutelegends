@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.entities.Player;
 import ca.sfu.lastminutelegends.entities.Position;
 
 /**
@@ -15,19 +17,19 @@ public class BonusReward extends Reward {
     private final int maxTTL;
     
     public BonusReward(Position position) {
-        super(position, "C", 50); // 50 points for bonus rewards
+        super(position, 50); // 50 points for bonus rewards
         this.maxTTL = 10; // 10 ticks before disappearing
         this.timeToLive = this.maxTTL;
     }
     
     public BonusReward(Position position, int pointValue, int ttl) {
-        super(position, "C", pointValue);
+        super(position, pointValue);
         this.maxTTL = ttl;
         this.timeToLive = ttl;
     }
     
     @Override
-    public void onTick() {
+    public void onTick(Board board, Player player) {
         if (!collected) {
             timeToLive--;
         }

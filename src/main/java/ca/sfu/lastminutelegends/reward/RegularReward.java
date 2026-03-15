@@ -13,12 +13,7 @@ import ca.sfu.lastminutelegends.entities.Position;
 public class RegularReward extends Reward {
     
     public RegularReward(Position position) {
-        super(position, "R", 10); // 10 points for regular rewards
-    }
-    
-    @Override
-    public void onTick() {
-        // Regular rewards don't do anything on ticks
+        super(position,  10); // 10 points for regular rewards
     }
     
     @Override

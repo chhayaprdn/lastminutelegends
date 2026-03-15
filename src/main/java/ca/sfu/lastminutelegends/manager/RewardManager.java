@@ -37,7 +37,7 @@ public class RewardManager {
      */
     public int checkCollection(Player player) {
         int pointsEarned = 0;
-        Position playerPos = player.getPos();
+        Position playerPos = player.getPosition();
         
         // Check regular rewards
         List<Reward> collectedRegular = new ArrayList<>();
@@ -74,7 +74,7 @@ public class RewardManager {
         // Update existing bonuses
         List<BonusReward> expired = new ArrayList<>();
         for (BonusReward bonus : bonusRewards) {
-            bonus.onTick();
+            bonus.onTick(board, null); // TODO: Make this not null. Should happen on RewardManager refactor into RewardSystem
             if (bonus.isExpired()) {
                 expired.add(bonus);
                 System.out.println("Bonus reward expired at " + bonus.getPosition());

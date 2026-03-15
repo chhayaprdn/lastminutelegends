@@ -18,7 +18,7 @@ public class BoardAssembler implements BoardObserver {
             case '#' -> cells.getLast().add(CellFactory.wall());
             case 'S' -> cells.getLast().add(CellFactory.startPoint());
             case 'E' -> cells.getLast().add(CellFactory.endPoint());
-            case '.', 'R' -> cells.getLast().add(CellFactory.empty());
+            case '.', 'R', 'M' -> cells.getLast().add(CellFactory.empty());
             default -> {
                 System.err.println("Unexpected char '" + c + "' in board file. Defaulting to empty cell.");
                 cells.getLast().add(CellFactory.empty());
