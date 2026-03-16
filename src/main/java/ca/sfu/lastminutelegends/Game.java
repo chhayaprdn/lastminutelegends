@@ -92,11 +92,11 @@ public class Game {
         InputSystem inputSystem = new InputSystem(this.canvas);
 
         addSystem(inputSystem);
-        addSystem(new PlayerSystem(this.board, this.player, inputSystem));
+        addSystem(new PlayerSystem(inputSystem));
         addSystem(new EnemySystem());
         addSystem(new RewardSystem());
         addSystem(new CollisionDetectionSystem());
-        addSystem(new BoardRenderer(this.board));
+        addSystem(new BoardRenderer());
         addSystem(new EntityRenderer());
     }
     
