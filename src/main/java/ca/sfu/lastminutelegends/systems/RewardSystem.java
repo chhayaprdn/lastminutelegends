@@ -27,8 +27,7 @@ public class RewardSystem implements GameSystem {
         // Check for collection
         int pointsEarned = checkCollection();
         if (pointsEarned > 0) {
-            // Player score update will be handled by Game class
-            System.out.println("Earned " + pointsEarned + " points!");
+            Game.instance().setScore(Game.instance().getScore() + pointsEarned);
         }
     }
 

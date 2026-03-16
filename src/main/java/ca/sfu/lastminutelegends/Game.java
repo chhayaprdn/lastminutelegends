@@ -18,17 +18,22 @@ public class Game {
     
     private JFrame frame;
     private GameCanvas canvas;
-    private List<GameSystem> systems;
     private Board board;
-    private int tick;
-    private Player player;
-    private List<Entity> entities = new ArrayList<>();
+    private List<GameSystem> systems;
+    private List<Entity> entities;
     private GameState state;
+    private int tick;
+    private int score;
+    private int timer;
+    private Player player;
     
     private Game() {
         this.systems = new ArrayList<>();
-        this.tick = 0;
+        this.entities = new ArrayList<>();
         this.state = GameState.Menu;
+        this.tick = 0;
+        this.score = 0;
+        this.timer = 0;
     }
 
     public static Game instance() {
@@ -96,6 +101,7 @@ public class Game {
         addSystem(new EnemySystem());
         addSystem(new RewardSystem());
         addSystem(new CollisionDetectionSystem());
+        addSystem(new TimerSystem());
         addSystem(new BoardRenderer());
         addSystem(new EntityRenderer());
     }
@@ -130,5 +136,21 @@ public class Game {
 
     public List<Entity> getEntities() {
         return entities;
+    }
+    
+    public int getScore() {
+        return score;
+    }
+    
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getTimer() {
+        return timer;
+    }
+    
+    public void incrementTimer() {
+        timer++;
     }
 }
