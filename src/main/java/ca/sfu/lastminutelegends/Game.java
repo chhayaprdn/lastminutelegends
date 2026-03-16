@@ -5,6 +5,9 @@ import ca.sfu.lastminutelegends.board.BoardAssembler;
 import ca.sfu.lastminutelegends.board.BoardReader;
 import ca.sfu.lastminutelegends.entities.*;
 import ca.sfu.lastminutelegends.systems.*;
+import ca.sfu.lastminutelegends.systems.BoardRenderer;
+import ca.sfu.lastminutelegends.systems.CollisionDetectionSystem;
+import ca.sfu.lastminutelegends.systems.GameSystem;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -20,10 +23,12 @@ public class Game {
     private int tick;
     private Player player;
     private List<Entity> entities = new ArrayList<>();
+    private GameState state;
     
     private Game() {
         this.systems = new ArrayList<>();
         this.tick = 0;
+        this.state = GameState.Menu;
     }
 
     public static Game instance() {
@@ -36,6 +41,7 @@ public class Game {
 
     public void load() {
         this.canvas = new GameCanvas();
+        this.state = GameState.Playing;
         
         SwingUtilities.invokeLater(() -> {
             this.frame = new JFrame("Last-Minute Legends");
@@ -52,6 +58,10 @@ public class Game {
     
     public void loop() {
         Timer tickLoop = new Timer(100, _ -> {
+            if (this.state != GameState.Playing) {
+                return;
+            }
+
             for (GameSystem system : this.systems) {
                 system.tick(this.tick);
             }
@@ -85,6 +95,7 @@ public class Game {
         addSystem(new PlayerSystem(this.board, this.player, inputSystem));
         addSystem(new EnemySystem());
         addSystem(new RewardSystem());
+        addSystem(new CollisionDetectionSystem(this.player, this.enemies));
         addSystem(new BoardRenderer(this.board));
         addSystem(new EntityRenderer());
     }
@@ -95,6 +106,14 @@ public class Game {
     
     public List<GameSystem> getSystems() {
         return this.systems;
+    }
+
+    public GameState getState() {
+        return this.state;
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
     }
 
     public Board getBoard() {
