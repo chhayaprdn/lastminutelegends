@@ -1,16 +1,11 @@
 package ca.sfu.lastminutelegends.systems;
 
+import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.*;
 
 import java.awt.*;
 
 public class BoardRenderer implements GameSystem {
-    private final Board board;
-    
-    public BoardRenderer(Board board) {
-        this.board = board;
-    }
-    
     @Override
     public void tick(int tick) {
         
@@ -18,9 +13,9 @@ public class BoardRenderer implements GameSystem {
 
     @Override
     public void render(Graphics g) {
-        for (int y = 0; y < board.getHeight(); y++) {
-            for (int x = 0; x < board.getWidth(); x++) {
-                Cell cell = board.getCell(x, y);
+        for (int y = 0; y < Game.instance().getBoard().getHeight(); y++) {
+            for (int x = 0; x < Game.instance().getBoard().getWidth(); x++) {
+                Cell cell = Game.instance().getBoard().getCell(x, y);
 
                 switch (cell) {
                     case Wall _ -> g.setColor(Color.DARK_GRAY);

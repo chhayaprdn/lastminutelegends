@@ -1,5 +1,6 @@
 package ca.sfu.lastminutelegends.systems;
 
+import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.entities.Direction;
 import ca.sfu.lastminutelegends.entities.Player;
@@ -11,20 +12,16 @@ import java.awt.*;
  * This keeps input handling separate from player logic (clean separation of concerns).
  */
 public class PlayerSystem implements GameSystem {
-    private final Board board;
-    private final Player player;
     private final InputSystem input;
 
-    public PlayerSystem(Board board, Player player, InputSystem input) {
-        this.board = board;
-        this.player = player;
+    public PlayerSystem(InputSystem input) {
         this.input = input;
     }
 
     @Override
     public void tick(int tick) {
         Direction dir = input.consumeDirection();
-        player.tryMove(dir, board);
+        Game.instance().getPlayer().tryMove(dir, Game.instance().getBoard());
     }
 
     @Override
