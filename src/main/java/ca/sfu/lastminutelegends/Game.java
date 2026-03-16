@@ -1,7 +1,10 @@
 package ca.sfu.lastminutelegends;
 
 import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.board.BoardLoader;
+import ca.sfu.lastminutelegends.board.BoardAssembler;
+import ca.sfu.lastminutelegends.board.BoardReader;
+import ca.sfu.lastminutelegends.entities.*;
+import ca.sfu.lastminutelegends.systems.*;
 import ca.sfu.lastminutelegends.systems.BoardRenderer;
 import ca.sfu.lastminutelegends.systems.CollisionDetectionSystem;
 import ca.sfu.lastminutelegends.systems.GameSystem;
@@ -9,16 +12,6 @@ import ca.sfu.lastminutelegends.systems.GameSystem;
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import ca.sfu.lastminutelegends.entities.MovingEnemy;
-import ca.sfu.lastminutelegends.entities.Player;
-import ca.sfu.lastminutelegends.entities.Position;
-import ca.sfu.lastminutelegends.systems.EnemySystem;
-import ca.sfu.lastminutelegends.systems.EntityRenderer;
-import ca.sfu.lastminutelegends.systems.InputSystem;
-import ca.sfu.lastminutelegends.systems.PlayerSystem;
-
-import java.util.Arrays;
 
 public class Game {
     private static Game INSTANCE = null;
@@ -29,7 +22,7 @@ public class Game {
     private Board board;
     private int tick;
     private Player player;
-    private List<MovingEnemy> enemies;
+    private List<Entity> entities = new ArrayList<>();
     private GameState state;
     
     private Game() {
@@ -48,6 +41,7 @@ public class Game {
 
     public void load() {
         this.canvas = new GameCanvas();
+        this.state = GameState.Playing;
         
         SwingUtilities.invokeLater(() -> {
             this.frame = new JFrame("Last-Minute Legends");
@@ -58,8 +52,7 @@ public class Game {
             this.frame.setVisible(true);
         });
         
-        this.board = BoardLoader.loadBoard("/board.txt");
-        this.state = GameState.Playing;
+        loadBoard();
         loadSystems();
     }
     
@@ -84,21 +77,27 @@ public class Game {
         renderLoop.start();
     }
 
+    private void loadBoard() {
+        BoardReader reader = new BoardReader("/board.txt");
+        BoardAssembler assembler = new BoardAssembler();
+        
+        reader.addObserver(assembler);
+        reader.addObserver(new EntityPlacer());
+        reader.readBoard();
+        
+        this.board = assembler.getBoard();
+    }
+    
     private void loadSystems() {
-        // Temporary spawn positions (we can later auto-detect Start/End from the board)
-        this.player = new Player(new Position(1, 6)); // near 'S' in board.txt
-        this.enemies = Arrays.asList(
-                new MovingEnemy(new Position(7, 1))     // demo enemy spawn
-        );
-
         InputSystem inputSystem = new InputSystem(this.canvas);
 
-        addSystem(new BoardRenderer(this.board));
         addSystem(inputSystem);
         addSystem(new PlayerSystem(this.board, this.player, inputSystem));
-        addSystem(new EnemySystem(this.board, this.player, this.enemies));
-        addSystem(new CollisionDetectionSystem(this.player, this.enemies));
-        addSystem(new EntityRenderer(this.player, this.enemies));
+        addSystem(new EnemySystem());
+        addSystem(new RewardSystem());
+        addSystem(new CollisionDetectionSystem());
+        addSystem(new BoardRenderer(this.board));
+        addSystem(new EntityRenderer());
     }
     
     private void addSystem(GameSystem system) {
@@ -115,5 +114,21 @@ public class Game {
 
     public void setState(GameState state) {
         this.state = state;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+    
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+    
+    public Player getPlayer() {
+        return player;
+    }
+
+    public List<Entity> getEntities() {
+        return entities;
     }
 }

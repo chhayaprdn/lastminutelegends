@@ -2,6 +2,8 @@ package ca.sfu.lastminutelegends.entities;
 
 import ca.sfu.lastminutelegends.board.Board;
 
+import java.awt.*;
+
 /**
  * Represents the main character controlled by the player.
  * Movement rules:
@@ -10,29 +12,32 @@ import ca.sfu.lastminutelegends.board.Board;
  * - Cannot move into non-passable cells (walls)
  */
 
-public class Player {
-    private Position pos;
-
+public class Player extends MovingEntity {
     public Player(Position startPos) {
-        this.pos = startPos;
-    }
-
-    public Position getPos() {
-        return pos;
+        super(startPos);
     }
 
     /**
      * Attempt to move the player one tile in the given direction.
      * If the move is invalid (blocked/outside), the player stays put.
      */
-    
     public void tryMove(Direction dir, Board board) {
         if (dir == null) return;
 
-        Position next = pos.move(dir);
-        if (board.isWalkable(next)) {
-            pos = next;
+        Position next = position.move(dir);
+        if (isWalkable(board, next)) {
+            position = next;
         }
     }
 
+    @Override
+    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
+        g.setColor(Color.RED);
+        g.fillOval(
+                offsetX + position.x * cellSize + 10,
+                offsetY + position.y * cellSize + 10,
+                cellSize - 20,
+                cellSize - 20
+        );
+    }
 }

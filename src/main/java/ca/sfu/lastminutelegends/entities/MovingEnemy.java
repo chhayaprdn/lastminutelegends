@@ -2,6 +2,7 @@ package ca.sfu.lastminutelegends.entities;
 
 import ca.sfu.lastminutelegends.board.Board;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,31 +12,27 @@ import java.util.List;
  * If multiple moves are equally good, a fixed priority order is used
  * for deterministic behavior (helps debugging and avoids randomness).
  */
-public class MovingEnemy {
-    private Position pos;
-
+public class MovingEnemy extends MovingEntity {
     // Tie-break priority order for consistent results
     private static final List<Direction> PRIORITY =
             Arrays.asList(Direction.UP, Direction.LEFT, Direction.DOWN, Direction.RIGHT);
 
     public MovingEnemy(Position startPos) {
-        this.pos = startPos;
+        super(startPos);
     }
 
-    public Position getPos() {
-        return pos;
-    }
+    @Override
+    public void onTick(Board board, Player player) {
+        super.onTick(board, player);
 
-    /** Move one tile toward the player if any valid move exists. */
-    public void moveOneTick(Position playerPos, Board board) {
         Direction best = null;
         int bestDist = Integer.MAX_VALUE;
 
         for (Direction d : PRIORITY) {
-            Position next = pos.move(d);
-            if (!board.isWalkable(next)) continue;
+            Position next = position.move(d);
+            if (!isWalkable(board, next)) continue;
 
-            int dist = next.manhattanDistance(playerPos);
+            int dist = next.manhattanDistance(player.getPosition());
             if (dist < bestDist) {
                 bestDist = dist;
                 best = d;
@@ -43,9 +40,18 @@ public class MovingEnemy {
         }
 
         if (best != null) {
-            pos = pos.move(best);
+            position = position.move(best);
         }
-        // If no valid move, enemy stays in place (e.g., cornered by walls).
     }
 
+    @Override
+    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
+        g.setColor(Color.ORANGE);
+        g.fillOval(
+                offsetX + position.x * cellSize + 10,
+                offsetY + position.y * cellSize + 10,
+                cellSize - 20,
+                cellSize - 20
+        );
+    }
 }
