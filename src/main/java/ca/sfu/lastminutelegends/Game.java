@@ -46,7 +46,7 @@ public class Game {
 
     public void load() {
         this.canvas = new GameCanvas();
-        this.state = GameState.Playing;
+//        this.state = GameState.Playing;
         
         SwingUtilities.invokeLater(() -> {
             this.frame = new JFrame("Last-Minute Legends");
@@ -171,5 +171,9 @@ public class Game {
     
     public int getCanvasWidth() {
         return canvas.getWidth();
+    }
+    
+    public int getCanvasHeight() {
+        return canvas.getHeight();
     }
 }
