@@ -95,7 +95,7 @@ public class Game {
         addSystem(new PlayerSystem(this.board, this.player, inputSystem));
         addSystem(new EnemySystem());
         addSystem(new RewardSystem());
-        addSystem(new CollisionDetectionSystem(this.player, this.enemies));
+        addSystem(new CollisionDetectionSystem());
         addSystem(new BoardRenderer(this.board));
         addSystem(new EntityRenderer());
     }
