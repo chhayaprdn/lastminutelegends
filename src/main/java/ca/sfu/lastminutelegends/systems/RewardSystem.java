@@ -1,13 +1,17 @@
 package ca.sfu.lastminutelegends.systems;
 
-import ca.sfu.lastminutelegends.Game;
-import ca.sfu.lastminutelegends.board.Cell;
-import ca.sfu.lastminutelegends.entities.*;
-
-import java.awt.*;
+import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.board.Cell;
+import ca.sfu.lastminutelegends.entities.BonusReward;
+import ca.sfu.lastminutelegends.entities.Entity;
+import ca.sfu.lastminutelegends.entities.Position;
+import ca.sfu.lastminutelegends.entities.RegularReward;
+import ca.sfu.lastminutelegends.entities.Reward;
 
 /**
  * GameSystem that handles all reward-related logic

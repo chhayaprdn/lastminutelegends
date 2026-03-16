@@ -1,17 +1,26 @@
 package ca.sfu.lastminutelegends;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.board.BoardAssembler;
 import ca.sfu.lastminutelegends.board.BoardReader;
-import ca.sfu.lastminutelegends.entities.*;
-import ca.sfu.lastminutelegends.systems.*;
+import ca.sfu.lastminutelegends.entities.Entity;
+import ca.sfu.lastminutelegends.entities.EntityPlacer;
+import ca.sfu.lastminutelegends.entities.Player;
 import ca.sfu.lastminutelegends.systems.BoardRenderer;
 import ca.sfu.lastminutelegends.systems.CollisionDetectionSystem;
+import ca.sfu.lastminutelegends.systems.EnemySystem;
+import ca.sfu.lastminutelegends.systems.EntityRenderer;
 import ca.sfu.lastminutelegends.systems.GameSystem;
-
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import ca.sfu.lastminutelegends.systems.InputSystem;
+import ca.sfu.lastminutelegends.systems.PlayerSystem;
+import ca.sfu.lastminutelegends.systems.RewardSystem;
 
 public class Game {
     private static Game INSTANCE = null;
@@ -24,6 +33,7 @@ public class Game {
     private Player player;
     private List<Entity> entities = new ArrayList<>();
     private GameState state;
+    private int score = 0;
     
     private Game() {
         this.systems = new ArrayList<>();
@@ -130,5 +140,28 @@ public class Game {
 
     public List<Entity> getEntities() {
         return entities;
+    }
+
+    /**
+     * Returns the player's current score.
+     * 
+     * @return the player's score
+     */
+    public int getScore() {
+        return score;
+    }
+
+    /**
+     * Adds delta to the player's score. If the resulting score is negative, 
+     * the game state is set to lost
+     * 
+     * @param delta points to add(use a negative value to subtract)
+     */
+    public void addScore(int delta) {
+        this.score += delta;
+
+        if (this.score < 0) {
+            setState(GameState.Lost);
+        }
     }
 }

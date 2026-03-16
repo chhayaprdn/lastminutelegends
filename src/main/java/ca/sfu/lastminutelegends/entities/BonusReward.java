@@ -7,25 +7,41 @@ import java.awt.Graphics;
 import ca.sfu.lastminutelegends.board.Board;
 
 /**
- * Bonus rewards (Coffee)
- * Appear randomly, disappear after TTL, worth more points
+* A bonus reward (coffee) that spawns randomly and disappears after a fixed number
+ * of ticks if not collected. Worth 50 points by default.
  */
 public class BonusReward extends Reward {
     private int timeToLive;
     private final int maxTTL;
     
+    /**
+     * Creates a bonus reward with default values (50 points, 10 tick TTL).
+     *
+     * @param position the grid cell where this reward appears
+     */
     public BonusReward(Position position) {
         super(position, 50); // 50 points for bonus rewards
         this.maxTTL = 10; // 10 ticks before disappearing
         this.timeToLive = this.maxTTL;
     }
     
+    /**
+     * @param position   the grid cell where this reward appears
+     * @param pointValue points awarded on collection
+     * @param ttl        ticks before the reward expires
+     */
     public BonusReward(Position position, int pointValue, int ttl) {
         super(position, pointValue);
         this.maxTTL = ttl;
         this.timeToLive = ttl;
     }
     
+    /**
+     * Decrements the TTL counter by one tick. No effect if already collected.
+     *
+     * @param board  unused; present for interface compatibility
+     * @param player unused; present for interface compatibility
+     */
     @Override
     public void onTick(Board board, Player player) {
         if (!collected) {
@@ -48,8 +64,16 @@ public class BonusReward extends Reward {
     public double getTimeRemainingPercentage() {
         return (double) timeToLive / maxTTL;
     }
-    
- @Override
+    /**
+     * Renders the reward as a fading coffee-brown square with a countdown.
+     * Nothing is drawn if collected or expired.
+     *
+     * @param g        the graphics context
+     * @param cellSize pixel size of one board cell
+     * @param offsetX  horizontal pixel offset of the board origin
+     * @param offsetY  vertical pixel offset of the board origin
+     */
+    @Override
     public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
         if (collected || isExpired()) return;
         
