@@ -1,10 +1,8 @@
-package ca.sfu.lastminutelegends.reward;
+package ca.sfu.lastminutelegends.entities;
 
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-
-import ca.sfu.lastminutelegends.entities.Position;
 
 /**
  * Regular rewards (School Supplies)

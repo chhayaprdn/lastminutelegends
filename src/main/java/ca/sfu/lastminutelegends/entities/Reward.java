@@ -1,7 +1,5 @@
-package ca.sfu.lastminutelegends.reward;
+package ca.sfu.lastminutelegends.entities;
 
-import ca.sfu.lastminutelegends.entities.Position;
-import ca.sfu.lastminutelegends.entities.Entity;
 import java.awt.*;
 
 /**

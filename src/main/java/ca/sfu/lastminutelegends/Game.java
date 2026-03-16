@@ -4,17 +4,11 @@ import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.board.BoardAssembler;
 import ca.sfu.lastminutelegends.board.BoardReader;
 import ca.sfu.lastminutelegends.entities.*;
-import ca.sfu.lastminutelegends.systems.BoardRenderer;
-import ca.sfu.lastminutelegends.systems.GameSystem;
+import ca.sfu.lastminutelegends.systems.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import ca.sfu.lastminutelegends.systems.EnemySystem;
-import ca.sfu.lastminutelegends.systems.EntityRenderer;
-import ca.sfu.lastminutelegends.systems.InputSystem;
-import ca.sfu.lastminutelegends.systems.PlayerSystem;
 
 public class Game {
     private static Game INSTANCE = null;
@@ -87,10 +81,11 @@ public class Game {
     private void loadSystems() {
         InputSystem inputSystem = new InputSystem(this.canvas);
 
-        addSystem(new BoardRenderer(this.board));
         addSystem(inputSystem);
         addSystem(new PlayerSystem(this.board, this.player, inputSystem));
         addSystem(new EnemySystem());
+        addSystem(new RewardSystem());
+        addSystem(new BoardRenderer(this.board));
         addSystem(new EntityRenderer());
     }
     

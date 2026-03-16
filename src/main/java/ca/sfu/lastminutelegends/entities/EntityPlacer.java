@@ -2,7 +2,6 @@ package ca.sfu.lastminutelegends.entities;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.BoardObserver;
-import ca.sfu.lastminutelegends.reward.RegularReward;
 
 public class EntityPlacer implements BoardObserver {
     @Override
