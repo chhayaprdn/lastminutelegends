@@ -11,7 +11,18 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+/**
+ * Main is the entry point of the maze game application.
+ * It creates the main window, sets up the UI,
+ * and connects keyboard input to the board panel.
+ */
 public class Main {
+
+    /**
+     * Launches the game application.
+     *
+     * @param args command-line arguments
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("Last Minute Legends");
@@ -23,18 +34,19 @@ public class Main {
             JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 10));
             JLabel scoreLabel = new JLabel("Score: 0");
             JLabel timeLabel = new JLabel("Time: 0");
-            final int[] seconds = {0};
 
-	    Timer timer = new Timer(1000, e -> {
-    		seconds[0]++;
-    		timeLabel.setText("Time: " + seconds[0]);
-	    });
-	    timer.start();
+            final int[] seconds = {0};
+            Timer timer = new Timer(1000, e -> {
+                seconds[0]++;
+                timeLabel.setText("Time: " + seconds[0]);
+            });
+            timer.start();
 
             topPanel.add(scoreLabel);
             topPanel.add(timeLabel);
 
-            BoardPanel boardPanel = new BoardPanel(scoreLabel);
+            GameBoard gameBoard = new GameBoard();
+            BoardPanel boardPanel = new BoardPanel(gameBoard, scoreLabel);
             boardPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
 
             frame.addKeyListener(new java.awt.event.KeyAdapter() {
