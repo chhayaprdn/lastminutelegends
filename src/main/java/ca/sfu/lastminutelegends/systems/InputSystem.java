@@ -1,5 +1,7 @@
 package ca.sfu.lastminutelegends.systems;
 
+import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameState;
 import ca.sfu.lastminutelegends.entities.Direction;
 
 import java.awt.*;
@@ -27,6 +29,7 @@ public class InputSystem implements GameSystem {
                     case KeyEvent.VK_DOWN, KeyEvent.VK_S -> lastDirection.set(Direction.DOWN);
                     case KeyEvent.VK_LEFT, KeyEvent.VK_A -> lastDirection.set(Direction.LEFT);
                     case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> lastDirection.set(Direction.RIGHT);
+                    case KeyEvent.VK_ENTER -> Game.instance().setState(GameState.Playing);
                     default -> { /* ignore other keys */ }
                 }
             }
