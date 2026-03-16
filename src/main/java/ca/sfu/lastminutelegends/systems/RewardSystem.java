@@ -13,16 +13,17 @@ import java.util.Random;
  * GameSystem that handles all reward-related logic
  */
 public class RewardSystem implements GameSystem {
-    private static final double BONUS_SPAWN_CHANCE = 0.05; // 5% chance per tick
+    private static final double BONUS_SPAWN_CHANCE = 0.10; // 5% chance per tick
     private static final int BONUS_POINTS = 50;
     private static final int BONUS_TTL = 10; // 10 ticks
     
     private final Random random = new Random();
     
     @Override
-    public void tick(int currentTick) {
+    public void tick(int tick) {
         // Update rewards (TTL, spawning)
-        updateBonusRewards();
+        if (tick % 5 == 0)
+            updateBonusRewards();
         
         // Check for collection
         int pointsEarned = checkCollection();

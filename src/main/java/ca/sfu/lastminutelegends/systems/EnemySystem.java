@@ -13,6 +13,9 @@ import java.awt.*;
 public class EnemySystem implements GameSystem {
     @Override
     public void tick(int tick) {
+        if (tick % 10 != 0)
+            return;
+        
         for (Entity e : Game.instance().getEntities()) {
             if (e instanceof MovingEnemy) {
                 e.onTick(Game.instance().getBoard(), Game.instance().getPlayer());
