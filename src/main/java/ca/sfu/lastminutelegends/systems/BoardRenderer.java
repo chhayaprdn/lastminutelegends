@@ -32,13 +32,17 @@ public class BoardRenderer implements GameSystem {
             for (int x = 0; x < Game.instance().getBoard().getWidth(); x++) {
                 Cell cell = Game.instance().getBoard().getCell(x, y);
 
+                int xPos = Game.instance().getBoardOffsetX() + x * Game.instance().getCellSize();
+                int yPos = Game.instance().getBoardOffsetY() + y * Game.instance().getCellSize();
+                int size = Game.instance().getCellSize();
+                
                 if (cell instanceof Wall) {
-                    g.drawImage(wallTexture, 50 + x * 50, 50 + y * 50, 50, 50, null);
+                    g.drawImage(wallTexture, xPos, yPos, size, size, null);
                     continue;
                 }
                 
                 if (cell instanceof EmptyCell) {
-                    g.drawImage(floorTexture, 50 + x * 50, 50 + y * 50, 50, 50, null);
+                    g.drawImage(floorTexture, xPos, yPos, size, size, null);
                     continue;
                 }
                 
@@ -48,7 +52,7 @@ public class BoardRenderer implements GameSystem {
                     case null, default -> g.setColor(Color.LIGHT_GRAY);
                 }
                 
-                g.fillRect(50 + x * 50, 50 + y * 50, 50, 50);
+                g.fillRect(xPos, yPos, size, size);
             }
         }
     }

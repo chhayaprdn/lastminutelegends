@@ -24,11 +24,4 @@ public class Board {
     public Cell getCell(int x, int y) {
         return this.cells.get(y).get(x);
     }
-
-    public boolean isWalkable(ca.sfu.lastminutelegends.entities.Position p) {
-        if (p.x < 0 || p.y < 0 || p.x >= width || p.y >= height) {
-            return false;
-        }
-        return getCell(p.x, p.y).isPassable();
-    }
 }

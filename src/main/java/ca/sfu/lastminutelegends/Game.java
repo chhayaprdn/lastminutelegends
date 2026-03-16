@@ -104,6 +104,7 @@ public class Game {
         addSystem(new TimerSystem());
         addSystem(new BoardRenderer());
         addSystem(new EntityRenderer());
+        addSystem(new HudRenderer());
     }
     
     private void addSystem(GameSystem system) {
@@ -152,5 +153,23 @@ public class Game {
     
     public void incrementTimer() {
         timer++;
+    }
+    
+    public int getCellSize() {
+        int availableWidth = canvas.getWidth() - HudRenderer.TIMER_WIDTH - HudRenderer.SCORE_WIDTH;
+        
+        return availableWidth / board.getWidth();
+    }
+    
+    public int getBoardOffsetX() {
+        return HudRenderer.TIMER_WIDTH;
+    }
+    
+    public int getBoardOffsetY() {
+        return 50;
+    }
+    
+    public int getCanvasWidth() {
+        return canvas.getWidth();
     }
 }
