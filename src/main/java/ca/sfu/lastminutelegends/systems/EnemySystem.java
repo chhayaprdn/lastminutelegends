@@ -13,7 +13,7 @@ import java.awt.*;
 public class EnemySystem implements GameSystem {
     @Override
     public void tick(int tick) {
-        if (tick % 10 != 0)
+        if (tick % 5 != 0)
             return;
         
         for (Entity e : Game.instance().getEntities()) {
