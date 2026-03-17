@@ -4,8 +4,9 @@ import ca.sfu.lastminutelegends.Game;
 
 import java.awt.*;
 
-public class MainMenu {
-    public static void render(Graphics g) {
+public class MainMenuScreen implements Screen {
+    @Override
+    public void render(Graphics g) {
         int canvasWidth = Game.instance().getCanvasWidth();
         int canvasHeight = Game.instance().getCanvasHeight();
         

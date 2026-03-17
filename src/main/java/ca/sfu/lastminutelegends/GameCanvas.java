@@ -1,30 +1,28 @@
 package ca.sfu.lastminutelegends;
 
-import ca.sfu.lastminutelegends.systems.GameSystem;
-import ca.sfu.lastminutelegends.ui.MainMenu;
+import ca.sfu.lastminutelegends.ui.GameScreen;
+import ca.sfu.lastminutelegends.ui.LossScreen;
+import ca.sfu.lastminutelegends.ui.MainMenuScreen;
+import ca.sfu.lastminutelegends.ui.WinScreen;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GameCanvas extends JPanel {
+    MainMenuScreen mainMenuScreen = new MainMenuScreen();
+    GameScreen gameScreen = new GameScreen();
+    WinScreen winScreen = new WinScreen();
+    LossScreen lossScreen = new LossScreen();
+    
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        if (Game.instance().getState() == GameState.Menu) {
-            MainMenu.render(g);
-        }
-        
-        if (Game.instance().getState() == GameState.Playing) {
-            for (GameSystem system : Game.instance().getSystems()) {
-                system.render(g);
-            }
-        }
-
-        if (Game.instance().getState() == GameState.Lost) {
-            g.setColor(Color.RED);
-            g.setFont(new Font("Arial", Font.BOLD, 48));
-            g.drawString("YOU LOST", 550, 120);
+        switch (Game.instance().getState()) {
+            case GameState.Menu -> mainMenuScreen.render(g);
+            case GameState.Playing -> gameScreen.render(g);
+            case GameState.Won -> winScreen.render(g);
+            case GameState.Lost -> lossScreen.render(g);
         }
     }
 }
