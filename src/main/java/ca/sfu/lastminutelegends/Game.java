@@ -57,7 +57,6 @@ public class Game {
 
     public void load() {
         this.canvas = new GameCanvas();
-//        this.state = GameState.Playing;
 
         SwingUtilities.invokeLater(() -> {
             this.frame = new JFrame("Last-Minute Legends");
@@ -164,6 +163,7 @@ public class Game {
         this.score += delta;
 
         if (this.score < 0) {
+            this.score = 0;
             setState(GameState.Lost);
         }
     }

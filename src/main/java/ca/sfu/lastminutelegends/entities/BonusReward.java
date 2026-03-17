@@ -1,29 +1,30 @@
 package ca.sfu.lastminutelegends.entities;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 import ca.sfu.lastminutelegends.board.Board;
+
+import javax.imageio.ImageIO;
 
 /**
 * A bonus reward (coffee) that spawns randomly and disappears after a fixed number
  * of ticks if not collected. Worth 50 points by default.
  */
 public class BonusReward extends Reward {
+    private static final BufferedImage TEXTURE;
+
+    static {
+        try {
+            TEXTURE = ImageIO.read(BonusReward.class.getResourceAsStream("/textures/bonusReward.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     private int timeToLive;
     private final int maxTTL;
-    
-    /**
-     * Creates a bonus reward with default values (50 points, 10 tick TTL).
-     *
-     * @param position the grid cell where this reward appears
-     */
-    public BonusReward(Position position) {
-        super(position, 50); // 50 points for bonus rewards
-        this.maxTTL = 10; // 10 ticks before disappearing
-        this.timeToLive = this.maxTTL;
-    }
     
     /**
      * @param position   the grid cell where this reward appears
@@ -53,16 +54,8 @@ public class BonusReward extends Reward {
         return timeToLive <= 0 && !collected;
     }
     
-    public int getTimeToLive() {
-        return timeToLive;
-    }
-    
-    public int getMaxTTL() {
-        return maxTTL;
-    }
-    
-    public double getTimeRemainingPercentage() {
-        return (double) timeToLive / maxTTL;
+    public float getTimeRemainingPercentage() {
+        return (float) timeToLive / maxTTL;
     }
     /**
      * Renders the reward as a fading coffee-brown square with a countdown.
@@ -76,27 +69,19 @@ public class BonusReward extends Reward {
     @Override
     public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
         if (collected || isExpired()) return;
-        
-        // Use position.x and position.y (not getX()/getY())
-        int x = offsetX + position.x * cellSize + cellSize / 4;
-        int y = offsetY + position.y * cellSize + cellSize / 4;
-        int size = cellSize / 2;
-        
-        // Coffee brown with transparency based on time left
-        int alpha = (int) (255 * getTimeRemainingPercentage());
-        if (alpha < 50) alpha = 50;
-        
-        // Rich coffee brown
-        g.setColor(new Color(101, 67, 33, alpha));
-        g.fillRect(x, y, size, size);
-        
-        // Draw coffee symbol
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 10));
-        g.drawString("☕", x + size/4, y + size/2);
-        
-        // Draw countdown
-        g.setColor(Color.WHITE);
-        g.drawString(String.valueOf(timeToLive), x + size/2, y - 2);
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getTimeRemainingPercentage()));
+
+        g2d.drawImage(
+            TEXTURE,
+            offsetX + position.x * cellSize,
+            offsetY + position.y * cellSize,
+            cellSize,
+            cellSize,
+            null
+        );
+
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
     }
 }

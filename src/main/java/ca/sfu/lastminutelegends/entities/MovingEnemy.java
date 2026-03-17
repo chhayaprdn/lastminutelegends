@@ -1,8 +1,12 @@
 package ca.sfu.lastminutelegends.entities;
 
+import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.Board;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,10 +17,20 @@ import java.util.List;
  * for deterministic behavior (helps debugging and avoids randomness).
  */
 public class MovingEnemy extends MovingEntity {
+    private static final BufferedImage TEXTURE;
+    
     // Tie-break priority order for consistent results
     private static final List<Direction> PRIORITY =
             Arrays.asList(Direction.UP, Direction.LEFT, Direction.DOWN, Direction.RIGHT);
 
+    static {
+        try {
+            TEXTURE = ImageIO.read(MovingEnemy.class.getResourceAsStream("/textures/enemy.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     public MovingEnemy(Position startPos) {
         super(startPos);
     }
@@ -46,12 +60,13 @@ public class MovingEnemy extends MovingEntity {
 
     @Override
     public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
-        g.setColor(Color.ORANGE);
-        g.fillOval(
-                offsetX + position.x * cellSize + 10,
-                offsetY + position.y * cellSize + 10,
-                cellSize - 20,
-                cellSize - 20
+        g.drawImage(
+            TEXTURE, 
+            offsetX + position.x * cellSize, 
+            offsetY + position.y * cellSize, 
+            cellSize, 
+            cellSize, 
+            null
         );
     }
 }

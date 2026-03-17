@@ -9,13 +9,15 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class BoardRenderer implements GameSystem {
-    private BufferedImage wallTexture;
-    private BufferedImage floorTexture;
+    private static final BufferedImage WALL_TEXTURE;
+    private static final BufferedImage FLOOR_TEXTURE;
+    private static final BufferedImage DOOR_TEXTURE;
     
-    public BoardRenderer() {
+    static {
         try {
-            wallTexture = ImageIO.read(getClass().getResourceAsStream("/textures/wall.png"));
-            floorTexture = ImageIO.read(getClass().getResourceAsStream("/textures/floor.png"));
+            WALL_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/wall.png"));
+            FLOOR_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/floor.png"));
+            DOOR_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/door.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -35,24 +37,21 @@ public class BoardRenderer implements GameSystem {
                 int xPos = Game.instance().getBoardOffsetX() + x * Game.instance().getCellSize();
                 int yPos = Game.instance().getBoardOffsetY() + y * Game.instance().getCellSize();
                 int size = Game.instance().getCellSize();
-                
-                if (cell instanceof Wall) {
-                    g.drawImage(wallTexture, xPos, yPos, size, size, null);
-                    continue;
-                }
-                
-                if (cell instanceof EmptyCell) {
-                    g.drawImage(floorTexture, xPos, yPos, size, size, null);
-                    continue;
-                }
+
+                BufferedImage texture;
                 
                 switch (cell) {
-                    case StartPoint _ -> g.setColor(Color.BLUE);
-                    case EndPoint _ -> g.setColor(Color.GREEN);
-                    case null, default -> g.setColor(Color.LIGHT_GRAY);
+                    case Wall _ -> texture = WALL_TEXTURE;
+                    case EmptyCell _, StartPoint _ -> texture = FLOOR_TEXTURE;
+                    case EndPoint _ -> texture = DOOR_TEXTURE;
+                    case null, default -> texture = null;
                 }
-                
+
+                g.setColor(Color.LIGHT_GRAY);
                 g.fillRect(xPos, yPos, size, size);
+                if (texture != null)
+                    g.drawImage(texture, xPos, yPos, size, size, null);
+
             }
         }
     }
