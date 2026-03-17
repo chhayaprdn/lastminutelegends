@@ -47,6 +47,7 @@ public class Game {
         this.timer = 0;
     }
 
+    /** Returns the singleton Game instance, creating it if necessary. */
     public static Game instance() {
         if (INSTANCE == null) {
             INSTANCE = new Game();
@@ -55,6 +56,7 @@ public class Game {
         return INSTANCE;
     }
 
+    /** Initializes the Swing window, loads the board, and registers all game systems. */
     public void load() {
         this.canvas = new GameCanvas();
 
@@ -71,6 +73,7 @@ public class Game {
         loadSystems();
     }
 
+    /** Starts the tick loop with 100ms interval and render loop with 16ms interval */
     public void loop() {
         Timer tickLoop = new Timer(100, _ -> {
             if (this.state != GameState.Playing) {

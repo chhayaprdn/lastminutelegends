@@ -140,3 +140,7 @@ http-client.private.env.json
 .idea/**/.gitignore
 .idea/**/encodings.xml
 .idea/**/remote-targets.xml
+
+# ======== OS FILES
+.DS_STORE
+
