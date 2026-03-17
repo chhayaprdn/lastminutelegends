@@ -1,21 +1,32 @@
 package ca.sfu.lastminutelegends;
 
-import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.board.BoardAssembler;
-import ca.sfu.lastminutelegends.board.BoardReader;
-import ca.sfu.lastminutelegends.entities.*;
-import ca.sfu.lastminutelegends.systems.*;
-import ca.sfu.lastminutelegends.systems.BoardRenderer;
-import ca.sfu.lastminutelegends.systems.CollisionDetectionSystem;
-import ca.sfu.lastminutelegends.systems.GameSystem;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
+import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.board.BoardAssembler;
+import ca.sfu.lastminutelegends.board.BoardReader;
+import ca.sfu.lastminutelegends.entities.Entity;
+import ca.sfu.lastminutelegends.entities.EntityPlacer;
+import ca.sfu.lastminutelegends.entities.Player;
+import ca.sfu.lastminutelegends.systems.BoardRenderer;
+import ca.sfu.lastminutelegends.systems.CollisionDetectionSystem;
+import ca.sfu.lastminutelegends.systems.EnemySystem;
+import ca.sfu.lastminutelegends.systems.EntityRenderer;
+import ca.sfu.lastminutelegends.systems.GameSystem;
+import ca.sfu.lastminutelegends.systems.HudRenderer;
+import ca.sfu.lastminutelegends.systems.InputSystem;
+import ca.sfu.lastminutelegends.systems.PlayerSystem;
+import ca.sfu.lastminutelegends.systems.RewardSystem;
+import ca.sfu.lastminutelegends.systems.TimerSystem;
+
 public class Game {
     private static Game INSTANCE = null;
-    
+
     private JFrame frame;
     private GameCanvas canvas;
     private Board board;
@@ -26,7 +37,7 @@ public class Game {
     private int score;
     private int timer;
     private Player player;
-    
+
     private Game() {
         this.systems = new ArrayList<>();
         this.entities = new ArrayList<>();
@@ -40,14 +51,14 @@ public class Game {
         if (INSTANCE == null) {
             INSTANCE = new Game();
         }
-        
+
         return INSTANCE;
     }
 
     public void load() {
         this.canvas = new GameCanvas();
 //        this.state = GameState.Playing;
-        
+
         SwingUtilities.invokeLater(() -> {
             this.frame = new JFrame("Last-Minute Legends");
             this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -56,11 +67,11 @@ public class Game {
             this.frame.setLocationRelativeTo(null);
             this.frame.setVisible(true);
         });
-        
+
         loadBoard();
         loadSystems();
     }
-    
+
     public void loop() {
         Timer tickLoop = new Timer(100, _ -> {
             if (this.state != GameState.Playing) {
@@ -70,14 +81,14 @@ public class Game {
             for (GameSystem system : this.systems) {
                 system.tick(this.tick);
             }
-            
+
             this.tick++;
         });
-        
+
         Timer renderLoop = new Timer(16, _ -> {
             this.canvas.repaint();
         });
-        
+
         tickLoop.start();
         renderLoop.start();
     }
@@ -85,14 +96,14 @@ public class Game {
     private void loadBoard() {
         BoardReader reader = new BoardReader("/board.txt");
         BoardAssembler assembler = new BoardAssembler();
-        
+
         reader.addObserver(assembler);
         reader.addObserver(new EntityPlacer());
         reader.readBoard();
-        
+
         this.board = assembler.getBoard();
     }
-    
+
     private void loadSystems() {
         InputSystem inputSystem = new InputSystem(this.canvas);
 
@@ -106,11 +117,11 @@ public class Game {
         addSystem(new EntityRenderer());
         addSystem(new HudRenderer());
     }
-    
+
     private void addSystem(GameSystem system) {
         this.systems.add(system);
     }
-    
+
     public List<GameSystem> getSystems() {
         return this.systems;
     }
@@ -126,11 +137,11 @@ public class Game {
     public Board getBoard() {
         return board;
     }
-    
+
     public void setPlayer(Player player) {
         this.player = player;
     }
-    
+
     public Player getPlayer() {
         return player;
     }
@@ -138,41 +149,51 @@ public class Game {
     public List<Entity> getEntities() {
         return entities;
     }
-    
+
     public int getScore() {
         return score;
     }
-    
-    public void setScore(int score) {
-        this.score = score;
+
+    /**
+     * Adds delta to the player's score. If the resulting score is negative,
+     * the game state is set to lost.
+     *
+     * @param delta points to add (use a negative value to subtract)
+     */
+    public void addScore(int delta) {
+        this.score += delta;
+
+        if (this.score < 0) {
+            setState(GameState.Lost);
+        }
     }
 
     public int getTimer() {
         return timer;
     }
-    
+
     public void incrementTimer() {
         timer++;
     }
-    
+
     public int getCellSize() {
         int availableWidth = canvas.getWidth() - HudRenderer.TIMER_WIDTH - HudRenderer.SCORE_WIDTH;
-        
+
         return availableWidth / board.getWidth();
     }
-    
+
     public int getBoardOffsetX() {
         return HudRenderer.TIMER_WIDTH;
     }
-    
+
     public int getBoardOffsetY() {
         return 50;
     }
-    
+
     public int getCanvasWidth() {
         return canvas.getWidth();
     }
-    
+
     public int getCanvasHeight() {
         return canvas.getHeight();
     }
