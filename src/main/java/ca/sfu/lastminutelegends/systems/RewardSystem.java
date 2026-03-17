@@ -6,132 +6,124 @@ import java.util.List;
 import java.util.Random;
 
 import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameState;
 import ca.sfu.lastminutelegends.board.Cell;
 import ca.sfu.lastminutelegends.entities.BonusReward;
 import ca.sfu.lastminutelegends.entities.Entity;
 import ca.sfu.lastminutelegends.entities.Position;
-import ca.sfu.lastminutelegends.entities.RegularReward;
 import ca.sfu.lastminutelegends.entities.Reward;
 
 /**
- * GameSystem that handles all reward-related logic
+ * GameSystem responsible for the full reward lifecycle each game tick.
  */
 public class RewardSystem implements GameSystem {
-    private static final double BONUS_SPAWN_CHANCE = 0.05; // 5% chance per tick
-    private static final int BONUS_POINTS = 50;
-    private static final int BONUS_TTL = 10; // 10 ticks
-    
+
+    private static final double BONUS_SPAWN_CHANCE = 0.05;
+    private static final int BONUS_POINT_VALUE = 50;
+    private static final int BONUS_TTL = 10;
+
     private final Random random = new Random();
-    
+
+    /**
+     * Runs one game tick. Does nothing if the game is not in the Playing state.
+     *
+     * @param currentTick the current tick count
+     */
     @Override
     public void tick(int currentTick) {
-        // Update rewards (TTL, spawning)
-        updateBonusRewards();
-        
-        // Check for collection
-        int pointsEarned = checkCollection();
-        if (pointsEarned > 0) {
-            // Player score update will be handled by Game class
-            System.out.println("Earned " + pointsEarned + " points!");
-        }
+        if (Game.instance().getState() != GameState.Playing) return;
+
+        expireOldBonusRewards();
+        trySpawnBonus();
+        collectRewardsAtPlayerPosition();
     }
 
     /**
-     * Check if player collected any rewards at current position
-     * @return points earned (0 if none)
+     * No rendering is done here. Each reward's own render() method is called
+     * by EntityRenderer as part of its pass over Game.getEntities().
+     *
+     * @param g the graphics context (unused)
      */
-    private int checkCollection() {
-        int pointsEarned = 0;
-        Position playerPos = Game.instance().getPlayer().getPosition();
-
-
-        List<Reward> collectedRewards = new ArrayList<>();
-        for (Entity e : Game.instance().getEntities()) {
-            // Check regular rewards
-            if (e instanceof RegularReward regularReward) {
-                if (!regularReward.isCollected() && regularReward.getPosition().equals(playerPos)) {
-                    regularReward.collect();
-                    pointsEarned += regularReward.getPointValue();
-                    collectedRewards.add(regularReward);
-                }
-            }
-            
-            // Check bonus rewards
-            if (e instanceof BonusReward bonusReward) {
-                if (!bonusReward.isCollected() && !bonusReward.isExpired() && bonusReward.getPosition().equals(playerPos)) {
-                    bonusReward.collect();
-                    pointsEarned += bonusReward.getPointValue();
-                    collectedRewards.add(bonusReward);
-                }
-            }
-        }
-        
-        Game.instance().getEntities().removeAll(collectedRewards);
-
-        return pointsEarned;
+    @Override
+    public void render(Graphics g) {
     }
 
     /**
-     * Update bonus rewards (called every tick)
+     * Ticks every active {@link BonusReward} and removes those whose TTL has
+     * reached zero.
      */
-    private void updateBonusRewards() {
-        // Delete expired bonus rewards
+    private void expireOldBonusRewards() {
         List<BonusReward> expired = new ArrayList<>();
+
         for (Entity e : Game.instance().getEntities()) {
-            if (e instanceof BonusReward bonusReward) {
-                bonusReward.onTick(Game.instance().getBoard(), Game.instance().getPlayer());
-                if (bonusReward.isExpired()) {
-                    expired.add(bonusReward);
+            if (e instanceof BonusReward bonus) {
+                bonus.onTick(Game.instance().getBoard(), Game.instance().getPlayer());
+                if (bonus.isExpired()) {
+                    expired.add(bonus);
                 }
             }
         }
-        Game.instance().getEntities().removeAll(expired);
 
-        // Try to spawn new bonus
-        if (shouldSpawnBonus()) {
-            spawnBonusReward();
-        }
+        Game.instance().getEntities().removeAll(expired);
+    }
+
+    /**
+     * Spawns a new {@link BonusReward} at a random valid board location if the
+     * random roll succeeds.
+     */
+    private void trySpawnBonus() {
+        if (random.nextDouble() >= BONUS_SPAWN_CHANCE) return;
+
+        List<Position> candidates = findValidSpawnLocations();
+        if (candidates.isEmpty()) return;
+
+        Position spawnPos = candidates.get(random.nextInt(candidates.size()));
+        Game.instance().getEntities().add(
+                new BonusReward(spawnPos, BONUS_POINT_VALUE, BONUS_TTL));
     }
     
     /**
-     * Determine if a bonus reward should spawn
+     * Checks whether the player's current position overlaps with any uncollected
+     * reward. If so, marks the reward as collected, adds its point value to the
+     * score, and removes it from the entity list.
      */
-    private boolean shouldSpawnBonus() {
-        return random.nextDouble() < BONUS_SPAWN_CHANCE;
-    }
+    private void collectRewardsAtPlayerPosition() {
+        Position playerPos = Game.instance().getPlayer().getPosition();
+        List<Reward> toCollect = new ArrayList<>();
 
-    /**
-     * Spawn a new bonus reward at a random empty location
-     */
-    private void spawnBonusReward() {
-        List<Position> validSpawns = findValidSpawnLocations();
+        for (Entity e : Game.instance().getEntities()) {
+            if (!(e instanceof Reward reward)) continue;
+            if (reward.isCollected()) continue;
+            if (!reward.getPosition().equals(playerPos)) continue;
 
-        if (validSpawns.isEmpty()) {
-            return; // No valid spawn locations
+            // Bonus rewards must still be active to be collectable
+            if (reward instanceof BonusReward bonus && bonus.isExpired()) continue;
+
+            toCollect.add(reward);
         }
 
-        Position spawnPos = validSpawns.get(random.nextInt(validSpawns.size()));
-        BonusReward newBonus = new BonusReward(spawnPos, BONUS_POINTS, BONUS_TTL);
-        Game.instance().getEntities().add(newBonus);
+        for (Reward reward : toCollect) {
+            reward.collect();
+            Game.instance().addScore(reward.getPointValue());
+        }
+
+        Game.instance().getEntities().removeAll(toCollect);
     }
 
     /**
-     * Find all valid locations where a bonus reward can spawn
+     * @return list of valid spawn positions; may be empty if the board is full
      */
     private List<Position> findValidSpawnLocations() {
         List<Position> valid = new ArrayList<>();
 
         for (int y = 0; y < Game.instance().getBoard().getHeight(); y++) {
             for (int x = 0; x < Game.instance().getBoard().getWidth(); x++) {
-                Position pos = new Position(x, y);
                 Cell cell = Game.instance().getBoard().getCell(x, y);
+                if (!cell.isPassable()) continue;
 
-                // Check if cell is passable (empty or reward cell)
-                if (cell.isPassable()) {
-                    // Check if position is not occupied by any other entity
-                    if (!isPositionOccupied(pos)) {
-                        valid.add(pos);
-                    }
+                Position pos = new Position(x, y);
+                if (!isOccupied(pos)) {
+                    valid.add(pos);
                 }
             }
         }
@@ -140,21 +132,15 @@ public class RewardSystem implements GameSystem {
     }
 
     /**
-     * Check if a position is occupied by any entity
+     * Returns true if any entity currently occupies the given position.
+     *
+     * @param pos the board position to check
+     * @return whether the position is already occupied
      */
-    private boolean isPositionOccupied(Position pos) {
-        // Check regular rewards
+    private boolean isOccupied(Position pos) {
         for (Entity e : Game.instance().getEntities()) {
-            if (e.getPosition().equals(pos)) {
-                return true;
-            }
+            if (e.getPosition().equals(pos)) return true;
         }
-
         return false;
-    }
-    
-    @Override
-    public void render(Graphics g) {
-        // Rendering handled by BoardRenderer calling each reward's render method
     }
 }
