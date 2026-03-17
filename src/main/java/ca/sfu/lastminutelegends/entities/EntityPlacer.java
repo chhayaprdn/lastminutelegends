@@ -14,6 +14,8 @@ public class EntityPlacer implements BoardObserver {
             Player player = new Player(new Position(x, y));
             Game.instance().setPlayer(player);
             Game.instance().getEntities().add(player);
+        } else if (c == 'P') {
+            Game.instance().getEntities().add(new Punishment(new Position(x, y)));
         }
     }
 }

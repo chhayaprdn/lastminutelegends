@@ -30,7 +30,7 @@ public class MovingEnemy extends MovingEntity {
 
         for (Direction d : PRIORITY) {
             Position next = position.move(d);
-            if (!isWalkable(board, next)) continue;
+            if (!isWalkable(board, next, false)) continue;
 
             int dist = next.manhattanDistance(player.getPosition());
             if (dist < bestDist) {

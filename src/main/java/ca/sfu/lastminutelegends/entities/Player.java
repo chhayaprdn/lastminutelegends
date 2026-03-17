@@ -25,7 +25,7 @@ public class Player extends MovingEntity {
         if (dir == null) return;
 
         Position next = position.move(dir);
-        if (isWalkable(board, next)) {
+        if (isWalkable(board, next, true)) {
             position = next;
         }
     }
