@@ -13,7 +13,7 @@ public class MainMenuScreen implements Screen {
         g.setColor(Color.RED);
         g.fillRect(0, 0, canvasWidth, canvasHeight);
         
-        g.setColor(Color.LIGHT_GRAY);
+        g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 100));
         FontMetrics fm = g.getFontMetrics();
         String firstTitleLine = "LAST-MINUTE";

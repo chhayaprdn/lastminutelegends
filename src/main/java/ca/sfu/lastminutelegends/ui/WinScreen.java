@@ -10,16 +10,16 @@ public class WinScreen implements Screen {
         int canvasWidth = Game.instance().getCanvasWidth();
         int canvasHeight = Game.instance().getCanvasHeight();
 
-        g.setColor(Color.GREEN);
+        g.setColor(Color.LIGHT_GRAY);
         g.fillRect(0, 0, canvasWidth, canvasHeight);
 
-        g.setColor(Color.WHITE);
+        g.setColor(Color.GREEN);
         g.setFont(new Font("Arial", Font.BOLD, 100));
         FontMetrics fm = g.getFontMetrics();
         String wonText = "YOU WON";
         g.drawString(wonText, canvasWidth / 2 - fm.stringWidth(wonText) / 2, canvasHeight / 2);
 
-        g.setColor(Color.GRAY);
+        g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.PLAIN, 28));
         fm = g.getFontMetrics();
         String timer = String.format("TIMER: %d:%02d", Game.instance().getTimer() / 60, Game.instance().getTimer() % 60);

@@ -15,7 +15,7 @@ public class HudRenderer implements GameSystem {
 
     @Override
     public void render(Graphics g) {
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.setFont(new Font("Arial", Font.BOLD, 24));
         FontMetrics fm = g.getFontMetrics();
         
