@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Random;
 
 import ca.sfu.lastminutelegends.Game;
-import ca.sfu.lastminutelegends.GameState;
 import ca.sfu.lastminutelegends.board.Cell;
 import ca.sfu.lastminutelegends.entities.BonusReward;
 import ca.sfu.lastminutelegends.entities.Entity;
@@ -17,11 +16,10 @@ import ca.sfu.lastminutelegends.entities.Reward;
  * GameSystem responsible for the full reward lifecycle each game tick.
  */
 public class RewardSystem implements GameSystem {
-
-    private static final double BONUS_SPAWN_CHANCE = 0.05;
-    private static final int BONUS_POINT_VALUE = 50;
-    private static final int BONUS_TTL = 10;
-
+    private static final double BONUS_SPAWN_CHANCE = 0.05; // 5% chance per tick
+    private static final int BONUS_POINTS = 50;
+    private static final int BONUS_TTL = 10; // 10 ticks
+    
     private final Random random = new Random();
 
     /**
@@ -31,8 +29,6 @@ public class RewardSystem implements GameSystem {
      */
     @Override
     public void tick(int currentTick) {
-        if (Game.instance().getState() != GameState.Playing) return;
-
         expireOldBonusRewards();
         trySpawnBonus();
         collectRewardsAtPlayerPosition();
@@ -79,7 +75,7 @@ public class RewardSystem implements GameSystem {
 
         Position spawnPos = candidates.get(random.nextInt(candidates.size()));
         Game.instance().getEntities().add(
-                new BonusReward(spawnPos, BONUS_POINT_VALUE, BONUS_TTL));
+                new BonusReward(spawnPos, BONUS_POINTS, BONUS_TTL));
     }
     
     /**
