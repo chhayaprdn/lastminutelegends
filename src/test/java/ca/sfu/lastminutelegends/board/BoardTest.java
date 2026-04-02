@@ -31,6 +31,12 @@ public class BoardTest {
         assertThrows(IndexOutOfBoundsException.class, () -> board.getCell(5, 4));
         assertThrows(IndexOutOfBoundsException.class, () -> board.getCell(0, 6));
     }
+    
+    @Test
+    void testBoardGetCellNegativeIndex() {
+        assertThrows(IndexOutOfBoundsException.class, () -> board.getCell(-1, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> board.getCell(2, -1));
+    }
 
     @Test
     void testCellPassability() {

@@ -30,6 +30,43 @@ public class GameTest {
         
         assertEquals(GameState.Playing, game.getState());
         assertEquals(25, game.getScore());
+        
+        game.addScore(15);
+        game.addScore(-5);
+        game.addScore(13);
+        game.addScore(-3);
+
+        assertEquals(GameState.Playing, game.getState());
+        assertEquals(45, game.getScore());
+    }
+    
+    @Test
+    void addScoreOnPointBoundary() {
+        game.setState(GameState.Playing);
+        game.addScore(0);
+
+        assertEquals(GameState.Playing, game.getState());
+        assertEquals(0, game.getScore());
+        
+        game.addScore(10);
+        assertEquals(10, game.getScore());
+        
+        game.addScore(-10);
+        assertEquals(GameState.Playing, game.getState());
+        assertEquals(0, game.getScore());
+    }
+    
+    @Test
+    void addScoreOffPointBoundary() {
+        game.setState(GameState.Playing);
+        game.addScore(0);
+
+        assertEquals(GameState.Playing, game.getState());
+        assertEquals(0, game.getScore());
+
+        game.addScore(-1);
+        assertEquals(GameState.Lost, game.getState());
+        assertEquals(0, game.getScore());
     }
     
     @Test
@@ -106,14 +143,27 @@ public class GameTest {
         
         assertEquals(0, system.tick);
         game.tick();
-        assertEquals(0, system.tick);
         game.tick();
         assertEquals(0, system.tick);
-        
+        assertEquals(0, game.getTick());
+
+        game.setState(GameState.Won);
+        game.tick();
+        game.tick();
+        assertEquals(0, system.tick);
+        assertEquals(0, game.getTick());
+
+        game.setState(GameState.Lost);
+        game.tick();
+        game.tick();
+        assertEquals(0, system.tick);
+        assertEquals(0, game.getTick());
+
         game.setState(GameState.Playing);
         game.tick();
         game.tick();
         assertEquals(1, system.tick);
+        assertEquals(2, game.getTick());
     }
     
     @Test

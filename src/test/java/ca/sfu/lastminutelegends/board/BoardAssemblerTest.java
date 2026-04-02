@@ -53,6 +53,9 @@ public class BoardAssemblerTest {
         boardAssembler.onCellParsed('5', 0, 0);
         assertTrue(errorContent.toString().contains("Unexpected char '5' in board file"));
         
+        Board board = boardAssembler.getBoard();
+        assertInstanceOf(EmptyCell.class, board.getCell(0, 0)); // Still should set it to an empty cell
+        
         System.setErr(System.err);
     }
     
