@@ -23,8 +23,9 @@ public class MovingEnemyTest {
      * Clears entity list before each test to avoid shared state issues.
      */
     @BeforeEach
-    void clearGameEntities() {
+    void clearGameEntities() throws NoSuchFieldException, IllegalAccessException {
         Game.instance().getEntities().clear();
+        TestUtils.resetGameInstance();
     }
 
     /**

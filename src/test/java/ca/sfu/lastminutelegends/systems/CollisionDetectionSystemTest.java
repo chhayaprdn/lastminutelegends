@@ -27,8 +27,10 @@ public class CollisionDetectionSystemTest {
      * Resets shared game state before each test.
      */
     @BeforeEach
-    void setup() {
+    void setup() throws NoSuchFieldException, IllegalAccessException {
         Game.instance().getEntities().clear();
+        TestUtils.resetGameInstance();
+        
         Game.instance().setState(GameState.Playing);
         Game.instance().setPlayer(null);
         Game.instance().setBoard(null);
