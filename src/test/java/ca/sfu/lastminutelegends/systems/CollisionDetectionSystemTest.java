@@ -2,8 +2,8 @@ package ca.sfu.lastminutelegends.systems;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.GameState;
+import ca.sfu.lastminutelegends.TestUtils;
 import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.board.BoardAssembler;
 import ca.sfu.lastminutelegends.entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,8 +27,10 @@ public class CollisionDetectionSystemTest {
      * Resets shared game state before each test.
      */
     @BeforeEach
-    void setup() {
+    void setup() throws NoSuchFieldException, IllegalAccessException {
         Game.instance().getEntities().clear();
+        TestUtils.resetGameInstance();
+        
         Game.instance().setState(GameState.Playing);
         Game.instance().setPlayer(null);
         Game.instance().setBoard(null);
@@ -36,27 +38,11 @@ public class CollisionDetectionSystemTest {
     }
 
     /**
-     * Utility method to construct a board from string rows.
-     */
-    private Board makeBoard(String... rows) {
-        BoardAssembler assembler = new BoardAssembler();
-
-        for (int y = 0; y < rows.length; y++) {
-            char[] chars = rows[y].toCharArray();
-            for (int x = 0; x < chars.length; x++) {
-                assembler.onCellParsed(chars[x], x, y);
-            }
-        }
-
-        return assembler.getBoard();
-    }
-
-    /**
      * Player colliding with an enemy should immediately set the game state to LOST.
      */
     @Test
     void playerCollisionWithEnemyCausesLoss() {
-        Board board = makeBoard("...");
+        Board board = TestUtils.makeBoard("...");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(1, 0));
@@ -76,7 +62,7 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerCollisionWithPunishmentReducesScore() {
-        Board board = makeBoard("...");
+        Board board = TestUtils.makeBoard("...");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(1, 0));
@@ -97,7 +83,7 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerCollectsRewardAndScoreIncreases() {
-        Board board = makeBoard("...");
+        Board board = TestUtils.makeBoard("...");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(1, 0));
@@ -118,7 +104,7 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void expiredBonusRewardIsNotCollected() {
-        Board board = makeBoard("...");
+        Board board = TestUtils.makeBoard("...");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(1, 0));
@@ -141,7 +127,7 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerDoesNotWinIfRewardsRemain() {
-        Board board = makeBoard("S.E");
+        Board board = TestUtils.makeBoard("S.E");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(2, 0));
@@ -161,7 +147,7 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerWinsIfNoRewardsRemain() {
-        Board board = makeBoard("S.E");
+        Board board = TestUtils.makeBoard("S.E");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(2, 0));

@@ -2,8 +2,8 @@ package ca.sfu.lastminutelegends.systems;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.GameState;
+import ca.sfu.lastminutelegends.TestUtils;
 import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.board.BoardAssembler;
 import ca.sfu.lastminutelegends.entities.Direction;
 import ca.sfu.lastminutelegends.entities.Player;
 import ca.sfu.lastminutelegends.entities.Position;
@@ -46,22 +46,6 @@ public class PlayerMovementIntegrationTest {
     }
 
     /**
-     * Utility method to construct a board from string rows.
-     */
-    private Board makeBoard(String... rows) {
-        BoardAssembler assembler = new BoardAssembler();
-
-        for (int y = 0; y < rows.length; y++) {
-            char[] chars = rows[y].toCharArray();
-            for (int x = 0; x < chars.length; x++) {
-                assembler.onCellParsed(chars[x], x, y);
-            }
-        }
-
-        return assembler.getBoard();
-    }
-
-    /**
      * Injects a direction into InputSystem without using actual keyboard events.
      */
     @SuppressWarnings("unchecked")
@@ -77,7 +61,7 @@ public class PlayerMovementIntegrationTest {
      */
     @Test
     void validInputMovesPlayer() throws Exception {
-        Board board = makeBoard("...");
+        Board board = TestUtils.makeBoard("...");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(1, 0));
@@ -95,7 +79,7 @@ public class PlayerMovementIntegrationTest {
      */
     @Test
     void inputDoesNotMovePlayerIntoWall() throws Exception {
-        Board board = makeBoard(".#.");
+        Board board = TestUtils.makeBoard(".#.");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(0, 0));
@@ -113,7 +97,7 @@ public class PlayerMovementIntegrationTest {
      */
     @Test
     void inputDoesNotMovePlayerOutsideBoard() throws Exception {
-        Board board = makeBoard("...");
+        Board board = TestUtils.makeBoard("...");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(0, 0));
