@@ -1,8 +1,8 @@
 package ca.sfu.lastminutelegends.entities;
 
 import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.TestUtils;
 import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.board.BoardAssembler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,19 +19,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class MovingEnemyTest {
 
-    private Board makeBoard(String... rows) {
-        BoardAssembler assembler = new BoardAssembler();
-
-        for (int y = 0; y < rows.length; y++) {
-            char[] chars = rows[y].toCharArray();
-            for (int x = 0; x < chars.length; x++) {
-                assembler.onCellParsed(chars[x], x, y);
-            }
-        }
-
-        return assembler.getBoard();
-    }
-
     /**
      * Clears entity list before each test to avoid shared state issues.
      */
@@ -45,7 +32,7 @@ public class MovingEnemyTest {
      */
     @Test
     void enemyMovesCloserToPlayer() {
-        Board board = makeBoard("...", "...", "...");
+        Board board = TestUtils.makeBoard("...", "...", "...");
 
         Player player = new Player(new Position(2, 1));
         MovingEnemy enemy = new MovingEnemy(new Position(0, 1));
@@ -63,7 +50,7 @@ public class MovingEnemyTest {
      */
     @Test
     void enemyDoesNotMoveIntoWall() {
-        Board board = makeBoard("...", ".#.", "...");
+        Board board = TestUtils.makeBoard("...", ".#.", "...");
 
         Player player = new Player(new Position(2, 1));
         MovingEnemy enemy = new MovingEnemy(new Position(0, 1));
@@ -81,7 +68,7 @@ public class MovingEnemyTest {
      */
     @Test
     void enemyUsesTieBreakingPriority() {
-        Board board = makeBoard("...", "...", "...");
+        Board board = TestUtils.makeBoard("...", "...", "...");
 
         Player player = new Player(new Position(0, 0));
         MovingEnemy enemy = new MovingEnemy(new Position(1, 1));
@@ -99,7 +86,7 @@ public class MovingEnemyTest {
      */
     @Test
     void enemyStaysStillIfNoValidMoveExists() {
-        Board board = makeBoard("###", "#.#", "###");
+        Board board = TestUtils.makeBoard("###", "#.#", "###");
 
         Player player = new Player(new Position(0, 0));
         MovingEnemy enemy = new MovingEnemy(new Position(1, 1));

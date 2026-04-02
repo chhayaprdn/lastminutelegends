@@ -2,8 +2,8 @@ package ca.sfu.lastminutelegends.systems;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.GameState;
+import ca.sfu.lastminutelegends.TestUtils;
 import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.board.BoardAssembler;
 import ca.sfu.lastminutelegends.entities.MovingEnemy;
 import ca.sfu.lastminutelegends.entities.Player;
 import ca.sfu.lastminutelegends.entities.Position;
@@ -42,28 +42,12 @@ public class EnemyCollisionIntegrationTest {
     }
 
     /**
-     * Utility method to construct a board from string rows.
-     */
-    private Board makeBoard(String... rows) {
-        BoardAssembler assembler = new BoardAssembler();
-
-        for (int y = 0; y < rows.length; y++) {
-            char[] chars = rows[y].toCharArray();
-            for (int x = 0; x < chars.length; x++) {
-                assembler.onCellParsed(chars[x], x, y);
-            }
-        }
-
-        return assembler.getBoard();
-    }
-
-    /**
      * Verifies that when the enemy reaches the player through normal system ticks,
      * the collision system changes the game state to LOST.
      */
     @Test
     void enemyReachesPlayerAndGameBecomesLost() {
-        Board board = makeBoard("...");
+        Board board = TestUtils.makeBoard("...");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(2, 0));
@@ -85,7 +69,7 @@ public class EnemyCollisionIntegrationTest {
      */
     @Test
     void enemyDoesNotReachPlayerAndGameRemainsPlaying() {
-        Board board = makeBoard("....");
+        Board board = TestUtils.makeBoard("....");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(3, 0));

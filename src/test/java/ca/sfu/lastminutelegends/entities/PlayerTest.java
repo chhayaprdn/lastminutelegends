@@ -1,7 +1,7 @@
 package ca.sfu.lastminutelegends.entities;
 
+import ca.sfu.lastminutelegends.TestUtils;
 import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.board.BoardAssembler;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,27 +18,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PlayerTest {
 
     /**
-     * Utility method to construct a board from string rows.
-     */
-    private Board makeBoard(String... rows) {
-        BoardAssembler assembler = new BoardAssembler();
-
-        for (int y = 0; y < rows.length; y++) {
-            char[] chars = rows[y].toCharArray();
-            for (int x = 0; x < chars.length; x++) {
-                assembler.onCellParsed(chars[x], x, y);
-            }
-        }
-
-        return assembler.getBoard();
-    }
-
-    /**
      * Player should move into a valid empty cell.
      */
     @Test
     void playerMovesIntoValidCell() {
-        Board board = makeBoard("...", "...", "...");
+        Board board = TestUtils.makeBoard("...", "...", "...");
         Player player = new Player(new Position(1, 1));
 
         player.tryMove(Direction.RIGHT, board);
@@ -51,7 +35,7 @@ public class PlayerTest {
      */
     @Test
     void playerDoesNotMoveIntoWall() {
-        Board board = makeBoard("...", ".#.", "...");
+        Board board = TestUtils.makeBoard("...", ".#.", "...");
         Player player = new Player(new Position(0, 1));
 
         player.tryMove(Direction.RIGHT, board);
@@ -64,7 +48,7 @@ public class PlayerTest {
      */
     @Test
     void playerDoesNotMoveOutsideLeftBoundary() {
-        Board board = makeBoard("...", "...", "...");
+        Board board = TestUtils.makeBoard("...", "...", "...");
         Player player = new Player(new Position(0, 1));
 
         player.tryMove(Direction.LEFT, board);
@@ -77,7 +61,7 @@ public class PlayerTest {
      */
     @Test
     void playerDoesNotMoveOutsideUpperBoundary() {
-        Board board = makeBoard("...", "...", "...");
+        Board board = TestUtils.makeBoard("...", "...", "...");
         Player player = new Player(new Position(1, 0));
 
         player.tryMove(Direction.UP, board);
@@ -90,7 +74,7 @@ public class PlayerTest {
      */
     @Test
     void nullDirectionDoesNotMovePlayer() {
-        Board board = makeBoard("...", "...", "...");
+        Board board = TestUtils.makeBoard("...", "...", "...");
         Player player = new Player(new Position(1, 1));
 
         player.tryMove(null, board);
