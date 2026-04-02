@@ -1,11 +1,10 @@
 package ca.sfu.lastminutelegends.entities;
 
 import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.ui.TextureLoader;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Represents the main character controlled by the player.
@@ -22,14 +21,10 @@ public class Player extends MovingEntity {
     private static final BufferedImage RIGHT_TEXTURE;
 
     static {
-        try {
-            UP_TEXTURE = ImageIO.read(BonusReward.class.getResourceAsStream("/textures/playerUp.png"));
-            DOWN_TEXTURE = ImageIO.read(BonusReward.class.getResourceAsStream("/textures/playerDown.png"));
-            LEFT_TEXTURE = ImageIO.read(BonusReward.class.getResourceAsStream("/textures/playerLeft.png"));
-            RIGHT_TEXTURE = ImageIO.read(BonusReward.class.getResourceAsStream("/textures/playerRight.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        UP_TEXTURE = TextureLoader.load("playerUp.png");
+        DOWN_TEXTURE = TextureLoader.load("playerDown.png");
+        LEFT_TEXTURE = TextureLoader.load("playerLeft.png");
+        RIGHT_TEXTURE = TextureLoader.load("playerRight.png");
     }
     
     private Direction lastDir = Direction.UP;

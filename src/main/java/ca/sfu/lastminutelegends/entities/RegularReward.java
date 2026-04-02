@@ -1,11 +1,9 @@
 package ca.sfu.lastminutelegends.entities;
 
-import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Font;
+import ca.sfu.lastminutelegends.ui.TextureLoader;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Regular rewards (School Supplies)
@@ -15,11 +13,7 @@ public class RegularReward extends Reward {
     private static final BufferedImage TEXTURE;
     
     static {
-        try {
-            TEXTURE = ImageIO.read(RegularReward.class.getResourceAsStream("/textures/regularReward.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        TEXTURE = TextureLoader.load("regularReward.png");
     }
     
     public RegularReward(Position position) {

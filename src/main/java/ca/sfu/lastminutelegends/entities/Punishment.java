@@ -1,19 +1,15 @@
 package ca.sfu.lastminutelegends.entities;
 
-import javax.imageio.ImageIO;
+import ca.sfu.lastminutelegends.ui.TextureLoader;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class Punishment extends Entity {
     private static final BufferedImage TEXTURE;
 
     static {
-        try {
-            TEXTURE = ImageIO.read(RegularReward.class.getResourceAsStream("/textures/punishment.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        TEXTURE = TextureLoader.load("punishment.png");
     }
     
     public Punishment(Position position) {
