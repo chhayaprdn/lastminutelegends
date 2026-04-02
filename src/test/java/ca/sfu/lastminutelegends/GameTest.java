@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
-import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,10 +15,7 @@ public class GameTest {
     
     @BeforeEach
     void setup() throws IllegalAccessException, NoSuchFieldException {
-        Field field = Game.class.getDeclaredField("INSTANCE");
-        field.setAccessible(true);
-        field.set(null, null);
-        
+        TestUtils.resetGameInstance();
         game = Game.instance();
     }
     

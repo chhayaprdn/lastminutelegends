@@ -9,7 +9,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class GameCanvasIntegrationTest {
     @Test
-    void rendersGameScreenWhenPlayingState() {
+    void rendersGameScreenWhenPlayingState() throws NoSuchFieldException, IllegalAccessException {
+        TestUtils.resetGameInstance();
         BufferedImage image = new BufferedImage(1600, 900, BufferedImage.TYPE_INT_RGB);
         Graphics g = image.getGraphics();
         GameCanvas canvas = new GameCanvas();

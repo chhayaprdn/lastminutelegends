@@ -7,7 +7,6 @@ import ca.sfu.lastminutelegends.entities.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +18,7 @@ public class GameIntegrationTest {
 
     @BeforeEach
     void setup() throws IllegalAccessException, NoSuchFieldException {
-        Field field = Game.class.getDeclaredField("INSTANCE");
-        field.setAccessible(true);
-        field.set(null, null);
-
+        TestUtils.resetGameInstance();
         game = Game.instance();
     }
     

@@ -3,8 +3,16 @@ package ca.sfu.lastminutelegends;
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.board.BoardAssembler;
 
+import java.lang.reflect.Field;
+
 public class TestUtils {
 
+    public static void resetGameInstance() throws IllegalAccessException, NoSuchFieldException {
+        Field field = Game.class.getDeclaredField("INSTANCE");
+        field.setAccessible(true);
+        field.set(null, null);
+    }
+    
     public static Board makeBoard(String... rows) {
         BoardAssembler assembler = new BoardAssembler();
 

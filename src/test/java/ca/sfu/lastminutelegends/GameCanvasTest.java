@@ -16,7 +16,8 @@ public class GameCanvasTest {
     private GameCanvas canvas;
     
     @BeforeEach
-    void setup() {
+    void setup() throws NoSuchFieldException, IllegalAccessException {
+        TestUtils.resetGameInstance();
         image = new BufferedImage(1600, 900, BufferedImage.TYPE_INT_RGB);
         g = image.getGraphics();
         canvas = new GameCanvas();
