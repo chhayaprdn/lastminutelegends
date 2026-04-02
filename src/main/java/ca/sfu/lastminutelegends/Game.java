@@ -58,7 +58,7 @@ public class Game {
 
     /** Initializes the Swing window, loads the board, and registers all game systems. */
     public void load() {
-        this.canvas = new GameCanvas();
+        setCanvas(new GameCanvas());
 
         SwingUtilities.invokeLater(() -> {
             this.frame = new JFrame("Last-Minute Legends");
@@ -75,27 +75,26 @@ public class Game {
 
     /** Starts the tick loop with 100ms interval and render loop with 16ms interval */
     public void loop() {
-        Timer tickLoop = new Timer(100, _ -> {
-            if (this.state != GameState.Playing) {
-                return;
-            }
-
-            for (GameSystem system : this.systems) {
-                system.tick(this.tick);
-            }
-
-            this.tick++;
-        });
-
-        Timer renderLoop = new Timer(16, _ -> {
-            this.canvas.repaint();
-        });
+        Timer tickLoop = new Timer(100, _ -> tick());
+        Timer renderLoop = new Timer(16, _ -> canvas.repaint());
 
         tickLoop.start();
         renderLoop.start();
     }
+    
+    void tick() {
+        if (this.state != GameState.Playing) {
+            return;
+        }
 
-    private void loadBoard() {
+        for (GameSystem system : this.systems) {
+            system.tick(this.tick);
+        }
+
+        this.tick++;
+    }
+
+    void loadBoard() {
         BoardReader reader = new BoardReader("/board.txt");
         BoardAssembler assembler = new BoardAssembler();
 
@@ -106,7 +105,7 @@ public class Game {
         this.board = assembler.getBoard();
     }
 
-    private void loadSystems() {
+    void loadSystems() {
         InputSystem inputSystem = new InputSystem(this.canvas);
 
         addSystem(inputSystem);
@@ -120,7 +119,7 @@ public class Game {
         addSystem(new HudRenderer());
     }
 
-    private void addSystem(GameSystem system) {
+    void addSystem(GameSystem system) {
         this.systems.add(system);
     }
 
@@ -142,6 +141,10 @@ public class Game {
     
     public void setBoard(Board board) {
         this.board = board;
+    }
+    
+    void setCanvas(GameCanvas canvas) {
+        this.canvas = canvas;
     }
 
     public void setPlayer(Player player) {
@@ -203,5 +206,9 @@ public class Game {
 
     public int getCanvasHeight() {
         return canvas.getHeight();
+    }
+    
+    public int getTick() {
+        return tick;
     }
 }
