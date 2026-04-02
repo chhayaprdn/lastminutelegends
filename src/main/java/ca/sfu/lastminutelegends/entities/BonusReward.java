@@ -43,7 +43,7 @@ public class BonusReward extends Reward {
             timeToLive--;
         }
     }
-    
+
     public boolean isExpired() {
         return timeToLive <= 0 && !collected;
     }
@@ -51,6 +51,12 @@ public class BonusReward extends Reward {
     public float getTimeRemainingPercentage() {
         return (float) timeToLive / maxTTL;
     }
+    
+    @Override
+    protected BufferedImage getTexture() {
+        return TEXTURE;
+    }
+    
     /**
      * Renders the reward as a fading coffee-brown square with a countdown.
      * Nothing is drawn if collected or expired.

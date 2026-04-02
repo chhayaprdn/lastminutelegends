@@ -49,7 +49,7 @@ public class Player extends MovingEntity {
     }
 
     @Override
-    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
+    protected BufferedImage getTexture() {
         BufferedImage texture = UP_TEXTURE;
         
         switch (lastDir) {
@@ -57,14 +57,7 @@ public class Player extends MovingEntity {
             case LEFT -> texture = LEFT_TEXTURE;
             case RIGHT -> texture = RIGHT_TEXTURE;
         }
-
-        g.drawImage(
-                texture,
-                offsetX + position.x * cellSize,
-                offsetY + position.y * cellSize,
-                cellSize,
-                cellSize,
-                null
-        );
+        
+        return texture;
     }
 }

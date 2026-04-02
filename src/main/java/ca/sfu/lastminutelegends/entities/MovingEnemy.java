@@ -53,14 +53,7 @@ public class MovingEnemy extends MovingEntity {
     }
 
     @Override
-    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
-        g.drawImage(
-            TEXTURE, 
-            offsetX + position.x * cellSize, 
-            offsetY + position.y * cellSize, 
-            cellSize, 
-            cellSize, 
-            null
-        );
+    protected BufferedImage getTexture() {
+        return TEXTURE;
     }
 }
