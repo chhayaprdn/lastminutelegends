@@ -29,6 +29,7 @@ replay_pid*
 
 target/
 target/**/*.txt
+target/**/*.lst
 
 
 # ======== VSCODE GITIGNORE (https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore) ========
@@ -139,3 +140,7 @@ http-client.private.env.json
 .idea/**/.gitignore
 .idea/**/encodings.xml
 .idea/**/remote-targets.xml
+
+# ======== OS FILES
+.DS_STORE
+

@@ -1,14 +1,26 @@
 package ca.sfu.lastminutelegends.systems;
 
+import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.*;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class BoardRenderer implements GameSystem {
-    private final Board board;
+    private static final BufferedImage WALL_TEXTURE;
+    private static final BufferedImage FLOOR_TEXTURE;
+    private static final BufferedImage DOOR_TEXTURE;
     
-    public BoardRenderer(Board board) {
-        this.board = board;
+    static {
+        try {
+            WALL_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/wall.png"));
+            FLOOR_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/floor.png"));
+            DOOR_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/door.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     @Override
@@ -18,18 +30,28 @@ public class BoardRenderer implements GameSystem {
 
     @Override
     public void render(Graphics g) {
-        for (int y = 0; y < board.getHeight(); y++) {
-            for (int x = 0; x < board.getWidth(); x++) {
-                Cell cell = board.getCell(x, y);
+        for (int y = 0; y < Game.instance().getBoard().getHeight(); y++) {
+            for (int x = 0; x < Game.instance().getBoard().getWidth(); x++) {
+                Cell cell = Game.instance().getBoard().getCell(x, y);
 
-                switch (cell) {
-                    case Wall _ -> g.setColor(Color.DARK_GRAY);
-                    case StartPoint _ -> g.setColor(Color.BLUE);
-                    case EndPoint _ -> g.setColor(Color.GREEN);
-                    case null, default -> g.setColor(Color.LIGHT_GRAY);
-                }
+                int xPos = Game.instance().getBoardOffsetX() + x * Game.instance().getCellSize();
+                int yPos = Game.instance().getBoardOffsetY() + y * Game.instance().getCellSize();
+                int size = Game.instance().getCellSize();
+
+                BufferedImage texture;
                 
-                g.fillRect(50 + x * 50, 50 + y * 50, 50, 50);
+                switch (cell) {
+                    case Wall _ -> texture = WALL_TEXTURE;
+                    case EmptyCell _, StartPoint _ -> texture = FLOOR_TEXTURE;
+                    case EndPoint _ -> texture = DOOR_TEXTURE;
+                    case null, default -> texture = null;
+                }
+
+                g.setColor(Color.LIGHT_GRAY);
+                g.fillRect(xPos, yPos, size, size);
+                if (texture != null)
+                    g.drawImage(texture, xPos, yPos, size, size, null);
+
             }
         }
     }

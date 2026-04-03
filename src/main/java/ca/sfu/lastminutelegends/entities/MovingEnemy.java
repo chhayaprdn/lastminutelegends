@@ -1,7 +1,12 @@
 package ca.sfu.lastminutelegends.entities;
 
+import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.Board;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,31 +16,37 @@ import java.util.List;
  * If multiple moves are equally good, a fixed priority order is used
  * for deterministic behavior (helps debugging and avoids randomness).
  */
-public class MovingEnemy {
-    private Position pos;
-
+public class MovingEnemy extends MovingEntity {
+    private static final BufferedImage TEXTURE;
+    
     // Tie-break priority order for consistent results
     private static final List<Direction> PRIORITY =
             Arrays.asList(Direction.UP, Direction.LEFT, Direction.DOWN, Direction.RIGHT);
 
+    static {
+        try {
+            TEXTURE = ImageIO.read(MovingEnemy.class.getResourceAsStream("/textures/enemy.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    
     public MovingEnemy(Position startPos) {
-        this.pos = startPos;
+        super(startPos);
     }
 
-    public Position getPos() {
-        return pos;
-    }
+    @Override
+    public void onTick(Board board, Player player) {
+        super.onTick(board, player);
 
-    /** Move one tile toward the player if any valid move exists. */
-    public void moveOneTick(Position playerPos, Board board) {
         Direction best = null;
         int bestDist = Integer.MAX_VALUE;
 
         for (Direction d : PRIORITY) {
-            Position next = pos.move(d);
-            if (!isWalkable(board, next)) continue;
+            Position next = position.move(d);
+            if (!isWalkable(board, next, false)) continue;
 
-            int dist = next.manhattanDistance(playerPos);
+            int dist = next.manhattanDistance(player.getPosition());
             if (dist < bestDist) {
                 bestDist = dist;
                 best = d;
@@ -43,15 +54,19 @@ public class MovingEnemy {
         }
 
         if (best != null) {
-            pos = pos.move(best);
+            position = position.move(best);
         }
-        // If no valid move, enemy stays in place (e.g., cornered by walls).
     }
 
-    private boolean isWalkable(Board board, Position p) {
-        if (p.x < 0 || p.y < 0 || p.x >= board.getWidth() || p.y >= board.getHeight()) {
-            return false;
-        }
-        return board.getCell(p.x, p.y).isPassable();
+    @Override
+    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
+        g.drawImage(
+            TEXTURE, 
+            offsetX + position.x * cellSize, 
+            offsetY + position.y * cellSize, 
+            cellSize, 
+            cellSize, 
+            null
+        );
     }
 }
