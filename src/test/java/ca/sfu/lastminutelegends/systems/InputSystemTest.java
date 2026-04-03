@@ -63,28 +63,28 @@ public class InputSystemTest {
 
     @Test
     void testWKey() {
-        simulateKeyPress(KeyEvent.VK_UP);
+        simulateKeyPress(KeyEvent.VK_W);
 
         assertEquals(Direction.UP, input.consumeDirection());
     }
 
     @Test
     void testAKey() {
-        simulateKeyPress(KeyEvent.VK_LEFT);
+        simulateKeyPress(KeyEvent.VK_A);
 
         assertEquals(Direction.LEFT, input.consumeDirection());
     }
 
     @Test
     void testSKey() {
-        simulateKeyPress(KeyEvent.VK_DOWN);
+        simulateKeyPress(KeyEvent.VK_S);
 
         assertEquals(Direction.DOWN, input.consumeDirection());
     }
 
     @Test
     void testDKey() {
-        simulateKeyPress(KeyEvent.VK_RIGHT);
+        simulateKeyPress(KeyEvent.VK_D);
 
         assertEquals(Direction.RIGHT, input.consumeDirection());
     }

@@ -15,7 +15,6 @@ import ca.sfu.lastminutelegends.Game;
 public class MainMenuScreen implements Screen {
     @Override
     public void render(Graphics g) {
-        if (g == null) return;
         int canvasWidth = Game.instance().getCanvasWidth();
         int canvasHeight = Game.instance().getCanvasHeight();
 
@@ -29,7 +28,6 @@ public class MainMenuScreen implements Screen {
 
         // Choose font sizes relative to canvas width/height
         int titleSize = Math.max(36, canvasWidth / 10);
-        int subtitleSize = Math.max(28, canvasWidth / 20);
         int hintSize = Math.max(14, canvasWidth / 40);
 
         Font titleFont = new Font("Arial", Font.BOLD, titleSize);
