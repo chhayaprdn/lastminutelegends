@@ -71,8 +71,6 @@ public class InputSystemTest {
         assertEquals(Direction.RIGHT, input.consumeDirection());
     }
 
-    // ✅ WASD keys (important for coverage)
-
     @Test
     void testWKey() {
         JPanel panel = new JPanel();
@@ -164,8 +162,6 @@ public class InputSystemTest {
         assertNull(input.consumeDirection());
     }
 
-    // ✅ cover tick()
-
     @Test
     void testTickDoesNotCrash() {
         JPanel panel = new JPanel();
@@ -175,8 +171,6 @@ public class InputSystemTest {
 
         assertNull(input.consumeDirection());
     }
-
-    // ✅ cover render()
 
     @Test
     void testRenderDoesNotCrash() {

@@ -32,8 +32,6 @@ public class EntitiesTest {
         assertNotNull(enemy);
     }
 
-    // ✅ NEW SAFE TESTS (replace broken ones)
-
     @Test
     void testMultiplePositionObjects() {
         Position p1 = new Position(2, 3);
