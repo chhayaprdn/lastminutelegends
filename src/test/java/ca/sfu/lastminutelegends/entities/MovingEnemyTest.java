@@ -19,13 +19,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class MovingEnemyTest {
 
+    private Board board;
+    
     /**
      * Clears entity list before each test to avoid shared state issues.
      */
     @BeforeEach
-    void clearGameEntities() throws NoSuchFieldException, IllegalAccessException {
+    void setup() throws NoSuchFieldException, IllegalAccessException {
         Game.instance().getEntities().clear();
         TestUtils.resetGameInstance();
+        
+        board = TestUtils.makeBoard("...", "...", "...");
     }
 
     /**
@@ -33,8 +37,6 @@ public class MovingEnemyTest {
      */
     @Test
     void enemyMovesCloserToPlayer() {
-        Board board = TestUtils.makeBoard("...", "...", "...");
-
         Player player = new Player(new Position(2, 1));
         MovingEnemy enemy = new MovingEnemy(new Position(0, 1));
 
@@ -51,7 +53,7 @@ public class MovingEnemyTest {
      */
     @Test
     void enemyDoesNotMoveIntoWall() {
-        Board board = TestUtils.makeBoard("...", ".#.", "...");
+        board = TestUtils.makeBoard("...", ".#.", "...");
 
         Player player = new Player(new Position(2, 1));
         MovingEnemy enemy = new MovingEnemy(new Position(0, 1));
@@ -69,8 +71,6 @@ public class MovingEnemyTest {
      */
     @Test
     void enemyUsesTieBreakingPriority() {
-        Board board = TestUtils.makeBoard("...", "...", "...");
-
         Player player = new Player(new Position(0, 0));
         MovingEnemy enemy = new MovingEnemy(new Position(1, 1));
 
@@ -87,7 +87,7 @@ public class MovingEnemyTest {
      */
     @Test
     void enemyStaysStillIfNoValidMoveExists() {
-        Board board = TestUtils.makeBoard("###", "#.#", "###");
+        board = TestUtils.makeBoard("###", "#.#", "###");
 
         Player player = new Player(new Position(0, 0));
         MovingEnemy enemy = new MovingEnemy(new Position(1, 1));
