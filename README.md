@@ -1,5 +1,7 @@
 # Last Minute Legends (Group 19)
 A 2D maze game built with Java and Swing
+Play as a student trying to escape deadlines by collecting all
+school supplies and reaching the exit before the enemies catch you.
 
 ### Requirements
 - Java 25
