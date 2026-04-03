@@ -18,6 +18,7 @@ public class RewardSystem implements GameSystem {
     private static final double BONUS_SPAWN_CHANCE = 0.15; // 5% chance per tick
     private static final int BONUS_POINTS = 25;
     private static final int BONUS_TTL = 10;
+    private static final int TICK_INTERVAL = 5;
     
     private final Random random = new Random();
 
@@ -28,12 +29,12 @@ public class RewardSystem implements GameSystem {
      */
     @Override
     public void tick(int tick) {
-        if (tick % 5 != 0)
-            return;
-        
-        expireOldBonusRewards();
-        trySpawnBonus();
-    }
+    if (tick % 5 != 0)
+        return;
+
+    expireOldBonusRewards();
+    trySpawnBonus();
+}
 
     /**
      * No rendering is done here. Each reward's own render() method is called
