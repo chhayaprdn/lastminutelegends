@@ -9,8 +9,8 @@ public class WinScreen implements Screen {
     public void render(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
 
-        int canvasWidth = Game.instance().getCanvasWidth();
-        int canvasHeight = Game.instance().getCanvasHeight();
+        int canvasWidth = Game.instance().getCanvas().getCanvasWidth();
+        int canvasHeight = Game.instance().getCanvas().getCanvasHeight();
 
         // Enable smoother text and shape rendering for a cleaner end screen.
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

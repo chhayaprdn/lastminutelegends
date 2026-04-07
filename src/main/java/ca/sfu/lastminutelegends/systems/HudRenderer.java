@@ -20,9 +20,17 @@ public class HudRenderer implements GameSystem {
         FontMetrics fm = g.getFontMetrics();
         
         String timer = String.format("TIMER: %d:%02d", Game.instance().getTimer() / 60, Game.instance().getTimer() % 60);
-        g.drawString(timer, TIMER_WIDTH / 2 - fm.stringWidth(timer) / 2, Game.instance().getBoardOffsetY() + 25);
-        
+        g.drawString(
+            timer,
+            TIMER_WIDTH / 2 - fm.stringWidth(timer) / 2,
+            Game.instance().getCanvas().getBoardOffsetY() + 25
+        );
+
         String score = String.format("SCORE: %d", Game.instance().getScore());
-        g.drawString(score, Game.instance().getCanvasWidth() - SCORE_WIDTH / 2 - fm.stringWidth(score) / 2, Game.instance().getBoardOffsetY() + 25);
+        g.drawString(
+            score,
+            Game.instance().getCanvas().getCanvasWidth() - SCORE_WIDTH / 2 - fm.stringWidth(score) / 2,
+            Game.instance().getCanvas().getBoardOffsetY() + 25
+        );
     }
 }
