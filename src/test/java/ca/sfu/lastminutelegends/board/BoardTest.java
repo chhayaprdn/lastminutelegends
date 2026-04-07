@@ -3,17 +3,36 @@ package ca.sfu.lastminutelegends.board;
 import ca.sfu.lastminutelegends.TestUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
+
     private static Board board;
-    
+
     @BeforeAll
     public static void setup() {
         board = TestUtils.makeBoard("#.S", ".#.", "..E", "###");
     }
-    
+
+    @Test
+    void testBoardCreation() {
+        List<List<Cell>> cells = new ArrayList<>();
+
+        List<Cell> row = new ArrayList<>();
+        row.add(CellFactory.empty());
+        row.add(CellFactory.wall());
+
+        cells.add(row);
+
+        Board board = new Board(cells);
+
+        assertNotNull(board);
+        assertInstanceOf(EmptyCell.class, board.getCell(0, 0));
+        assertInstanceOf(Wall.class, board.getCell(1, 0));
+    }
+
     @Test
     void testBoardHasCorrectDimensions() {
         assertEquals(3, board.getWidth());
@@ -31,7 +50,7 @@ public class BoardTest {
         assertThrows(IndexOutOfBoundsException.class, () -> board.getCell(5, 4));
         assertThrows(IndexOutOfBoundsException.class, () -> board.getCell(0, 6));
     }
-    
+
     @Test
     void testBoardGetCellNegativeIndex() {
         assertThrows(IndexOutOfBoundsException.class, () -> board.getCell(-1, 0));
@@ -56,8 +75,6 @@ public class BoardTest {
     @Test
     void testBoardEndPointPosWithNoEndPoint() {
         Board boardWithNoEndPoint = TestUtils.makeBoard(".#", "S.");
-
         assertNull(boardWithNoEndPoint.getEndPointPos());
     }
-    
 }

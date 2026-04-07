@@ -1,9 +1,9 @@
 package ca.sfu.lastminutelegends.entities;
 
-import javax.imageio.ImageIO;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 
 /**
  * Regular rewards (School Supplies)
@@ -20,8 +20,10 @@ public class RegularReward extends Reward {
         }
     }
     
+    private static final int POINT_VALUE = 10;
+
     public RegularReward(Position position) {
-        super(position,  10); // 10 points for regular rewards
+        super(position, POINT_VALUE);
     }
     
     @Override
