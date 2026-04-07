@@ -1,43 +1,24 @@
 package ca.sfu.lastminutelegends.entities;
 
-import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 /**
  * Regular rewards (School Supplies)
  * Must be collected to win the game
  */
 public class RegularReward extends Reward {
-    private static final BufferedImage TEXTURE;
-    
-    static {
-        try {
-            TEXTURE = ImageIO.read(RegularReward.class.getResourceAsStream("/textures/regularReward.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
+    private static final int DEFAULT_POINT_VALUE = 10;
+    private static final BufferedImage TEXTURE = TextureLoader.loadTexture("/textures/regularReward.png");
+
     public RegularReward(Position position) {
-        super(position,  10); // 10 points for regular rewards
+        super(position, DEFAULT_POINT_VALUE);
     }
-    
+
     @Override
     public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
-        if (collected) return;
-
-        g.drawImage(
-            TEXTURE,
-            offsetX + position.x * cellSize,
-            offsetY + position.y * cellSize,
-            cellSize,
-            cellSize,
-            null
-        );
+        if (isCollected() || TEXTURE == null) return;
+        drawTexture(g, TEXTURE, cellSize, offsetX, offsetY);
     }
     
 }

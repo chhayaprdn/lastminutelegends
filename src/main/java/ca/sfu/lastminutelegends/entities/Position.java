@@ -36,4 +36,12 @@ public final class Position {
     public int hashCode() {
         return Objects.hash(this.x, this.y);
     }
+
+    public int getPixelX(int cellSize, int offsetX) {
+        return offsetX + x * cellSize;
+    }
+
+    public int getPixelY(int cellSize, int offsetY) {
+        return offsetY + y * cellSize;
+    }
 }
