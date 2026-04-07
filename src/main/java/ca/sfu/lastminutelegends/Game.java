@@ -3,9 +3,9 @@ package ca.sfu.lastminutelegends;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
 
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.board.BoardAssembler;
@@ -27,7 +27,7 @@ import ca.sfu.lastminutelegends.systems.TimerSystem;
 public class Game {
     private static Game INSTANCE = null;
 
-    private JFrame frame;
+    
     private GameCanvas canvas;
     private Board board;
     private List<GameSystem> systems;
@@ -61,12 +61,8 @@ public class Game {
         setCanvas(new GameCanvas());
 
         SwingUtilities.invokeLater(() -> {
-            this.frame = new JFrame("Last-Minute Legends");
-            this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.frame.setSize(1600, 900);
-            this.frame.add(this.canvas);
-            this.frame.setLocationRelativeTo(null);
-            this.frame.setVisible(true);
+            GameWindow window = new GameWindow(this.canvas);
+            window.show();
         });
 
         loadBoard();
@@ -163,6 +159,10 @@ public class Game {
         return score;
     }
 
+    public GameCanvas getCanvas() {
+        return canvas;
+    }
+
     /**
      * Adds delta to the player's score. If the resulting score is negative,
      * the game state is set to lost.
@@ -184,28 +184,6 @@ public class Game {
 
     public void incrementTimer() {
         timer++;
-    }
-
-    public int getCellSize() {
-        int availableWidth = canvas.getWidth() - HudRenderer.TIMER_WIDTH - HudRenderer.SCORE_WIDTH;
-
-        return availableWidth / board.getWidth();
-    }
-
-    public int getBoardOffsetX() {
-        return HudRenderer.TIMER_WIDTH;
-    }
-
-    public int getBoardOffsetY() {
-        return 50;
-    }
-
-    public int getCanvasWidth() {
-        return canvas.getWidth();
-    }
-
-    public int getCanvasHeight() {
-        return canvas.getHeight();
     }
     
     public int getTick() {
