@@ -1,13 +1,13 @@
 package ca.sfu.lastminutelegends.ui;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameFonts;
 
 /**
  * Renders the main menu using sizes/positions relative to the canvas so resizing works across platforms.
@@ -25,12 +25,11 @@ public class MainMenuScreen implements Screen {
         g2.setColor(Color.RED);
         g2.fillRect(0, 0, canvasWidth, canvasHeight);
 
-        int titleSize = Math.max(36, canvasWidth / 10);
-        int hintSize = Math.max(14, canvasWidth / 40);
+        float titleSize = Math.max(36f, canvasWidth / 10f);
+        float hintSize = Math.max(14f, canvasWidth / 40f);
 
-        Font titleFont = new Font("Arial", Font.BOLD, titleSize);
-        Font subtitleFont = new Font("Arial", Font.BOLD, titleSize);
-        Font hintFont = new Font("Arial", Font.PLAIN, hintSize);
+        var titleFont = GameFonts.headline(titleSize);
+        var hintFont = GameFonts.body(hintSize);
 
         g2.setColor(Color.WHITE);
 
@@ -42,7 +41,7 @@ public class MainMenuScreen implements Screen {
         int yTitle = (int) (canvasHeight * 0.30);
         g2.drawString(firstTitleLine, xTitle1, yTitle);
 
-        g2.setFont(subtitleFont);
+        g2.setFont(titleFont);
         FontMetrics fmSubtitle = g2.getFontMetrics();
         String secondTitleLine = "LEGENDS";
         int xTitle2 = (canvasWidth - fmSubtitle.stringWidth(secondTitleLine)) / 2;

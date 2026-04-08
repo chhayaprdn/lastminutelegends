@@ -1,6 +1,7 @@
 package ca.sfu.lastminutelegends.ui;
 
 import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameFonts;
 
 import java.awt.*;
 
@@ -23,8 +24,7 @@ public class WinScreen implements Screen {
         g2d.fillRect(0, 0, canvasWidth, canvasHeight);
 
         String wonText = "YOU WON";
-        Font titleFont = new Font("Arial", Font.BOLD, 100);
-        g2d.setFont(titleFont);
+        g2d.setFont(GameFonts.headline(100f));
         FontMetrics titleMetrics = g2d.getFontMetrics();
 
         int titleX = canvasWidth / 2 - titleMetrics.stringWidth(wonText) / 2;
@@ -44,8 +44,7 @@ public class WinScreen implements Screen {
         g2d.setColor(new Color(34, 197, 94));
         g2d.drawString(wonText, titleX, titleY);
 
-        Font infoFont = new Font("Arial", Font.PLAIN, 28);
-        g2d.setFont(infoFont);
+        g2d.setFont(GameFonts.body(28f));
         FontMetrics infoMetrics = g2d.getFontMetrics();
 
         String timer = String.format("TIMER: %d:%02d",
