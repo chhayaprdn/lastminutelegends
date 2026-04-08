@@ -28,5 +28,8 @@ public class WinScreen implements Screen {
 
         g.drawString(timer, canvasWidth / 2 - fm.stringWidth(timer) - 20, canvasHeight / 2 + 60);
         g.drawString(score, canvasWidth / 2 + 20, canvasHeight / 2 + 60);
+
+        String restart = "Press ENTER to Restart";
+        g.drawString(restart, canvasWidth / 2 - fm.stringWidth(restart) / 2, canvasHeight / 2 + 120);
     }
 }

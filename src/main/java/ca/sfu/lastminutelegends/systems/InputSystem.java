@@ -29,7 +29,14 @@ public class InputSystem implements GameSystem {
                     case KeyEvent.VK_DOWN, KeyEvent.VK_S -> lastDirection.set(Direction.DOWN);
                     case KeyEvent.VK_LEFT, KeyEvent.VK_A -> lastDirection.set(Direction.LEFT);
                     case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> lastDirection.set(Direction.RIGHT);
-                    case KeyEvent.VK_ENTER -> Game.instance().setState(GameState.Playing);
+                    case KeyEvent.VK_ENTER -> {
+                        Game game = Game.instance();
+                        if (game.getState() == GameState.Menu) {
+                            game.setState(GameState.Playing);
+                        } else if (game.getState() == GameState.Won || game.getState() == GameState.Lost) {
+                            game.restartGame();
+                        }
+                    }
                     default -> { /* ignore other keys */ }
                 }
             }
