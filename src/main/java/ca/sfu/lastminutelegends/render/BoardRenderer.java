@@ -1,31 +1,21 @@
-package ca.sfu.lastminutelegends.systems;
+package ca.sfu.lastminutelegends.render;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.*;
+import ca.sfu.lastminutelegends.ui.TextureLoader;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-public class BoardRenderer implements GameSystem {
+public class BoardRenderer implements GameRenderer {
     private static final BufferedImage WALL_TEXTURE;
     private static final BufferedImage FLOOR_TEXTURE;
     private static final BufferedImage DOOR_TEXTURE;
     
     static {
-        try {
-            WALL_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/wall.png"));
-            FLOOR_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/floor.png"));
-            DOOR_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/door.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
-    @Override
-    public void tick(int tick) {
-        
+        WALL_TEXTURE = TextureLoader.load("wall.png");
+        FLOOR_TEXTURE = TextureLoader.load("floor.png");
+        DOOR_TEXTURE = TextureLoader.load("door.png");
     }
 
     @Override
@@ -34,9 +24,9 @@ public class BoardRenderer implements GameSystem {
             for (int x = 0; x < Game.instance().getBoard().getWidth(); x++) {
                 Cell cell = Game.instance().getBoard().getCell(x, y);
 
-                int xPos = Game.instance().getBoardOffsetX() + x * Game.instance().getCellSize();
-                int yPos = Game.instance().getBoardOffsetY() + y * Game.instance().getCellSize();
-                int size = Game.instance().getCellSize();
+                int xPos = Game.instance().getCanvas().getBoardOffsetX() + x * Game.instance().getCanvas().getCellSize();
+                int yPos = Game.instance().getCanvas().getBoardOffsetY() + y * Game.instance().getCanvas().getCellSize();
+                int size = Game.instance().getCanvas().getCellSize();
 
                 BufferedImage texture;
                 

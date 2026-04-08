@@ -16,6 +16,8 @@ public class GameBoardLogicTest {
         board.movePlayer(0, -1);
 
         assertNotNull(board);
+        assertEquals(0, board.getPlayerCol());
+        assertEquals(0, board.getPlayerRow());
     }
 
     @Test
@@ -29,6 +31,8 @@ public class GameBoardLogicTest {
         board.movePlayer(0, 100);
 
         assertNotNull(board);
+        assertEquals(0, board.getPlayerCol());
+        assertEquals(0, board.getPlayerRow());
     }
 
     @Test
@@ -41,5 +45,7 @@ public class GameBoardLogicTest {
         }
 
         assertNotNull(board);
+        assertEquals(8, board.getPlayerCol());
+        assertEquals(9, board.getPlayerRow());
     }
 }

@@ -8,8 +8,8 @@ import java.awt.*;
 public class LossScreen implements Screen {
     @Override
     public void render(Graphics g) {
-        int canvasWidth = Game.instance().getCanvasWidth();
-        int canvasHeight = Game.instance().getCanvasHeight();
+        int canvasWidth = Game.instance().getCanvas().getCanvasWidth();
+        int canvasHeight = Game.instance().getCanvas().getCanvasHeight();
         
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, canvasWidth, canvasHeight);

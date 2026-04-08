@@ -1,149 +1,128 @@
 package ca.sfu.lastminutelegends.systems;
 
+import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameState;
+import ca.sfu.lastminutelegends.TestUtils;
 import ca.sfu.lastminutelegends.entities.Direction;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.JPanel;
-import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class InputSystemTest {
 
-    @Test
-    void testKeyPressUp() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
+    private static JPanel panel;
+    private static InputSystem input;
+    
+    @BeforeEach
+    void setup() {
+        panel = new JPanel();
+        input = new InputSystem(panel);
+    }
+    
+    private void simulateKeyPress(int key) {
         KeyEvent event = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_UP, ' ');
+                System.currentTimeMillis(), 0, key, ' ');
 
         for (var listener : panel.getKeyListeners()) {
             listener.keyPressed(event);
         }
+    }
+    
+    @Test
+    void testKeyPressUp() {
+        simulateKeyPress(KeyEvent.VK_UP);
 
         assertEquals(Direction.UP, input.consumeDirection());
     }
 
     @Test
     void testDownKey() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent e = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_DOWN, ' ');
-
-        for (var l : panel.getKeyListeners()) {
-            l.keyPressed(e);
-        }
+        simulateKeyPress(KeyEvent.VK_DOWN);
 
         assertEquals(Direction.DOWN, input.consumeDirection());
     }
 
     @Test
     void testLeftKey() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent e = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_LEFT, ' ');
-
-        for (var l : panel.getKeyListeners()) {
-            l.keyPressed(e);
-        }
+        simulateKeyPress(KeyEvent.VK_LEFT);
 
         assertEquals(Direction.LEFT, input.consumeDirection());
     }
 
     @Test
     void testRightKey() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent e = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_RIGHT, ' ');
-
-        for (var l : panel.getKeyListeners()) {
-            l.keyPressed(e);
-        }
+        simulateKeyPress(KeyEvent.VK_RIGHT);
 
         assertEquals(Direction.RIGHT, input.consumeDirection());
     }
 
-    // ✅ WASD keys (important for coverage)
-
     @Test
     void testWKey() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent e = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_W, ' ');
-
-        for (var l : panel.getKeyListeners()) {
-            l.keyPressed(e);
-        }
+        simulateKeyPress(KeyEvent.VK_W);
 
         assertEquals(Direction.UP, input.consumeDirection());
     }
 
     @Test
     void testAKey() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent e = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_A, ' ');
-
-        for (var l : panel.getKeyListeners()) {
-            l.keyPressed(e);
-        }
+        simulateKeyPress(KeyEvent.VK_A);
 
         assertEquals(Direction.LEFT, input.consumeDirection());
     }
 
     @Test
     void testSKey() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent e = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_S, ' ');
-
-        for (var l : panel.getKeyListeners()) {
-            l.keyPressed(e);
-        }
+        simulateKeyPress(KeyEvent.VK_S);
 
         assertEquals(Direction.DOWN, input.consumeDirection());
     }
 
     @Test
     void testDKey() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent e = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_D, ' ');
-
-        for (var l : panel.getKeyListeners()) {
-            l.keyPressed(e);
-        }
+        simulateKeyPress(KeyEvent.VK_D);
 
         assertEquals(Direction.RIGHT, input.consumeDirection());
+    }
+    
+    @Test
+    void testEnterKeyChangesGameStateToPlaying() throws NoSuchFieldException, IllegalAccessException {
+        TestUtils.resetGameInstance();
+
+        assertEquals(GameState.Menu, Game.instance().getState());
+        
+        simulateKeyPress(KeyEvent.VK_ENTER);
+        assertEquals(GameState.Playing, Game.instance().getState());
+    }
+
+    @Test
+    void testEnterKeyRestartsFromWonOrLost() throws NoSuchFieldException, IllegalAccessException {
+        TestUtils.resetGameInstance();
+
+        Game.instance().setState(GameState.Won);
+        simulateKeyPress(KeyEvent.VK_ENTER);
+        assertEquals(GameState.Playing, Game.instance().getState());
+
+        Game.instance().setState(GameState.Lost);
+        simulateKeyPress(KeyEvent.VK_ENTER);
+        assertEquals(GameState.Playing, Game.instance().getState());
+    }
+
+    @Test
+    void testEnterKeyDoesNotChangeGameStateWhenPlaying() throws NoSuchFieldException, IllegalAccessException {
+        TestUtils.resetGameInstance();
+
+        Game.instance().setState(GameState.Playing);
+        simulateKeyPress(KeyEvent.VK_ENTER);
+        assertEquals(GameState.Playing, Game.instance().getState());
     }
 
     @Test
     void testConsumeDirectionClears() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent event = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_DOWN, ' ');
-
-        for (var l : panel.getKeyListeners()) {
-            l.keyPressed(event);
-        }
+        simulateKeyPress(KeyEvent.VK_DOWN);
 
         input.consumeDirection();
         assertNull(input.consumeDirection());
@@ -151,42 +130,15 @@ public class InputSystemTest {
 
     @Test
     void testInvalidKeyDoesNothing() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        KeyEvent event = new KeyEvent(panel, KeyEvent.KEY_PRESSED,
-                System.currentTimeMillis(), 0, KeyEvent.VK_SHIFT, ' ');
-
-        for (var listener : panel.getKeyListeners()) {
-            listener.keyPressed(event);
-        }
-
+        simulateKeyPress(KeyEvent.VK_SHIFT);
+        
         assertNull(input.consumeDirection());
     }
-
-    // ✅ cover tick()
 
     @Test
     void testTickDoesNotCrash() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
         input.tick(1);
 
         assertNull(input.consumeDirection());
-    }
-
-    // ✅ cover render()
-
-    @Test
-    void testRenderDoesNotCrash() {
-        JPanel panel = new JPanel();
-        InputSystem input = new InputSystem(panel);
-
-        Graphics g = panel.getGraphics();
-
-        input.render(g);
-
-        assertTrue(true);
     }
 }

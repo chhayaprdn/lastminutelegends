@@ -3,9 +3,9 @@ package ca.sfu.lastminutelegends;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
+
 
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.board.BoardAssembler;
@@ -13,12 +13,13 @@ import ca.sfu.lastminutelegends.board.BoardReader;
 import ca.sfu.lastminutelegends.entities.Entity;
 import ca.sfu.lastminutelegends.entities.EntityPlacer;
 import ca.sfu.lastminutelegends.entities.Player;
-import ca.sfu.lastminutelegends.systems.BoardRenderer;
+import ca.sfu.lastminutelegends.render.BoardRenderer;
+import ca.sfu.lastminutelegends.render.GameRenderer;
 import ca.sfu.lastminutelegends.systems.CollisionDetectionSystem;
 import ca.sfu.lastminutelegends.systems.EnemySystem;
-import ca.sfu.lastminutelegends.systems.EntityRenderer;
+import ca.sfu.lastminutelegends.render.EntityRenderer;
 import ca.sfu.lastminutelegends.systems.GameSystem;
-import ca.sfu.lastminutelegends.systems.HudRenderer;
+import ca.sfu.lastminutelegends.render.HudRenderer;
 import ca.sfu.lastminutelegends.systems.InputSystem;
 import ca.sfu.lastminutelegends.systems.PlayerSystem;
 import ca.sfu.lastminutelegends.systems.RewardSystem;
@@ -27,11 +28,13 @@ import ca.sfu.lastminutelegends.systems.TimerSystem;
 public class Game {
     private static Game INSTANCE = null;
 
-    private JFrame frame;
+    
     private GameCanvas canvas;
     private Board board;
     private List<GameSystem> systems;
+    private List<GameRenderer> renderers;
     private List<Entity> entities;
+    private List<Entity> markedEntities;
     private GameState state;
     private int tick;
     private int score;
@@ -40,7 +43,9 @@ public class Game {
 
     private Game() {
         this.systems = new ArrayList<>();
+        this.renderers = new ArrayList<>();
         this.entities = new ArrayList<>();
+        this.markedEntities = new ArrayList<>();
         this.state = GameState.Menu;
         this.tick = 0;
         this.score = 0;
@@ -61,16 +66,13 @@ public class Game {
         setCanvas(new GameCanvas());
 
         SwingUtilities.invokeLater(() -> {
-            this.frame = new JFrame("Last-Minute Legends");
-            this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.frame.setSize(1600, 900);
-            this.frame.add(this.canvas);
-            this.frame.setLocationRelativeTo(null);
-            this.frame.setVisible(true);
+            GameWindow window = new GameWindow(this.canvas);
+            window.show();
         });
 
         loadBoard();
         loadSystems();
+        loadRenderers();
     }
 
     /** Starts the tick loop with 100ms interval and render loop with 16ms interval */
@@ -91,6 +93,11 @@ public class Game {
             system.tick(this.tick);
         }
 
+        if (!markedEntities.isEmpty()) {
+            entities.removeAll(markedEntities);
+            markedEntities.clear();
+        }
+        
         this.tick++;
     }
 
@@ -114,17 +121,28 @@ public class Game {
         addSystem(new RewardSystem());
         addSystem(new CollisionDetectionSystem());
         addSystem(new TimerSystem());
-        addSystem(new BoardRenderer());
-        addSystem(new EntityRenderer());
-        addSystem(new HudRenderer());
+    }
+    
+    void loadRenderers() {
+        addRenderer(new BoardRenderer());
+        addRenderer(new EntityRenderer());
+        addRenderer(new HudRenderer());
     }
 
     void addSystem(GameSystem system) {
         this.systems.add(system);
     }
+    
+    void addRenderer(GameRenderer renderer) {
+        this.renderers.add(renderer);
+    }
 
     public List<GameSystem> getSystems() {
         return this.systems;
+    }
+    
+    public List<GameRenderer> getRenderers() {
+        return this.renderers;
     }
 
     public GameState getState() {
@@ -145,7 +163,9 @@ public class Game {
         tick = 0;
         loadBoard();
         state = GameState.Playing;
-        canvas.requestFocusInWindow();
+        if (canvas != null) {
+            canvas.requestFocusInWindow();
+        }
     }
 
     public Board getBoard() {
@@ -171,9 +191,17 @@ public class Game {
     public List<Entity> getEntities() {
         return entities;
     }
+    
+    public List<Entity> getMarkedEntities() {
+        return markedEntities;
+    }
 
     public int getScore() {
         return score;
+    }
+
+    public GameCanvas getCanvas() {
+        return canvas;
     }
 
     /**
@@ -197,28 +225,6 @@ public class Game {
 
     public void incrementTimer() {
         timer++;
-    }
-
-    public int getCellSize() {
-        int availableWidth = canvas.getWidth() - HudRenderer.TIMER_WIDTH - HudRenderer.SCORE_WIDTH;
-
-        return availableWidth / board.getWidth();
-    }
-
-    public int getBoardOffsetX() {
-        return HudRenderer.TIMER_WIDTH;
-    }
-
-    public int getBoardOffsetY() {
-        return 50;
-    }
-
-    public int getCanvasWidth() {
-        return canvas.getWidth();
-    }
-
-    public int getCanvasHeight() {
-        return canvas.getHeight();
     }
     
     public int getTick() {

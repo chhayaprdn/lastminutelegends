@@ -1,6 +1,5 @@
 package ca.sfu.lastminutelegends.systems;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -18,6 +17,7 @@ public class RewardSystem implements GameSystem {
     private static final double BONUS_SPAWN_CHANCE = 0.15; // 5% chance per tick
     private static final int BONUS_POINTS = 25;
     private static final int BONUS_TTL = 10;
+    private static final int TICK_INTERVAL = 5;
     
     private final Random random = new Random();
 
@@ -30,19 +30,9 @@ public class RewardSystem implements GameSystem {
     public void tick(int tick) {
         if (tick % 5 != 0)
             return;
-        
+    
         expireOldBonusRewards();
         trySpawnBonus();
-    }
-
-    /**
-     * No rendering is done here. Each reward's own render() method is called
-     * by EntityRenderer as part of its pass over Game.getEntities().
-     *
-     * @param g the graphics context (unused)
-     */
-    @Override
-    public void render(Graphics g) {
     }
 
     /**

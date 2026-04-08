@@ -16,7 +16,6 @@ public class BoardTest {
         board = TestUtils.makeBoard("#.S", ".#.", "..E", "###");
     }
 
-    // ===== MY TESTS (keep for coverage) =====
     @Test
     void testBoardCreation() {
         List<List<Cell>> cells = new ArrayList<>();
@@ -30,15 +29,10 @@ public class BoardTest {
         Board board = new Board(cells);
 
         assertNotNull(board);
+        assertInstanceOf(EmptyCell.class, board.getCell(0, 0));
+        assertInstanceOf(Wall.class, board.getCell(1, 0));
     }
 
-    @Test
-    void testBoardFromLoader() {
-        Board board = BoardLoader.loadBoard("/test_board.txt");
-        assertNotNull(board);
-    }
-
-    // ===== MAIN BRANCH TESTS =====
     @Test
     void testBoardHasCorrectDimensions() {
         assertEquals(3, board.getWidth());

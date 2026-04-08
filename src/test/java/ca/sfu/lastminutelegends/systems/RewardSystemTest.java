@@ -145,4 +145,25 @@ public class RewardSystemTest {
         assertFalse(Game.instance().getEntities().contains(expired));
         assertTrue(Game.instance().getEntities().contains(active));
     }
+
+   @Test
+    void noBonusSpawnedWhenBoardIsOccupied() {
+        // Fill every passable cell with a reward so no valid spawn exists
+        for (int y = 1; y <= 3; y++) {
+            for (int x = 1; x <= 3; x++) {
+                Game.instance().getEntities().add(
+                    new RegularReward(new Position(x, y)));
+            }
+        }
+        int before = Game.instance().getEntities().size();
+        // Tick many times — no bonus should spawn since all cells are occupied
+        for (int i = 0; i < 20; i++) {
+            rewardSystem.tick(i * 5);
+        }
+        // No new bonus rewards should have been added
+        long bonusCount = Game.instance().getEntities().stream()
+                .filter(e -> e instanceof BonusReward)
+                .count();
+        assertEquals(0, bonusCount);
+    }
 }

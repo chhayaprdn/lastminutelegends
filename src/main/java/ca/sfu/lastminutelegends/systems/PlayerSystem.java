@@ -1,15 +1,11 @@
 package ca.sfu.lastminutelegends.systems;
 
 import ca.sfu.lastminutelegends.Game;
-import ca.sfu.lastminutelegends.board.Board;
-import ca.sfu.lastminutelegends.entities.BonusReward;
-import ca.sfu.lastminutelegends.entities.Direction;
-import ca.sfu.lastminutelegends.entities.Player;
 
-import javax.imageio.ImageIO;
+import ca.sfu.lastminutelegends.entities.Direction;
+
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
+
 
 /**
  * Applies player movement once per tick using the input direction.
@@ -26,10 +22,5 @@ public class PlayerSystem implements GameSystem {
     public void tick(int tick) {
         Direction dir = input.consumeDirection();
         Game.instance().getPlayer().tryMove(dir, Game.instance().getBoard());
-    }
-
-    @Override
-    public void render(Graphics g) {
-        // Rendering is handled by EntityRenderer.
     }
 }

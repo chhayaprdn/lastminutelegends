@@ -103,9 +103,6 @@ public class GameTest {
         public void tick(int tick) {
             this.tick = tick;
         }
-
-        @Override
-        public void render(Graphics g) {}
     }
     
     @Test
@@ -173,7 +170,7 @@ public class GameTest {
         
         // 1500 - 200 - 200 = 1100
         // 1100 / 3 = 366
-        assertEquals(366, game.getCellSize());
+        assertEquals(366, game.getCanvas().getCellSize());
     }
     
 }

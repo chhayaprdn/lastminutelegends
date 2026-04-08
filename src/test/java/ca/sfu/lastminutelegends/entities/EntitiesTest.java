@@ -20,26 +20,10 @@ public class EntitiesTest {
     }
 
     @Test
-    void testDirectionEnum() {
-        Direction dir = Direction.UP;
-        assertEquals(Direction.UP, dir);
-    }
-
-    @Test
     void testMovingEnemyCreation() {
         Position pos = new Position(1, 1);
         MovingEnemy enemy = new MovingEnemy(pos);
         assertNotNull(enemy);
-    }
-
-    // ✅ NEW SAFE TESTS (replace broken ones)
-
-    @Test
-    void testMultiplePositionObjects() {
-        Position p1 = new Position(2, 3);
-        Position p2 = new Position(2, 3);
-
-        assertNotSame(p1, p2);
     }
 
     @Test
@@ -56,13 +40,5 @@ public class EntitiesTest {
         MovingEnemy e2 = new MovingEnemy(new Position(1, 1));
 
         assertNotSame(e1, e2);
-    }
-
-    @Test
-    void testDirectionValues() {
-        assertNotNull(Direction.UP);
-        assertNotNull(Direction.DOWN);
-        assertNotNull(Direction.LEFT);
-        assertNotNull(Direction.RIGHT);
     }
 }

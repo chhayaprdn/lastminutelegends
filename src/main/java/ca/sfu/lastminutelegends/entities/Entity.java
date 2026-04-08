@@ -1,8 +1,11 @@
 package ca.sfu.lastminutelegends.entities;
 
+import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.render.RenderContext;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Abstract base class for all game entities.
@@ -30,8 +33,33 @@ public abstract class Entity {
         // Default implementation does nothing
     }
     
+    public void onCollideWithPlayer() {}
+
+    /**
+     * Deletes this entity at the end of the tick
+     */
+    public void markForDeletion() {
+        Game.instance().getMarkedEntities().add(this);
+    }
+    
+    protected abstract BufferedImage getTexture();
+    
     /**
      * Render the entity on the game canvas
+     * 
+     * @param ctx the render context. Contains cell size, offsets
      */
-    public abstract void render(Graphics g, int cellSize, int offsetX, int offsetY);
+    public void render(RenderContext ctx) {
+        if (getTexture() == null)
+            return;
+        
+        ctx.g().drawImage(
+            getTexture(),
+            ctx.offsetX() + position.x * ctx.cellSize(),
+            ctx.offsetY() + position.y * ctx.cellSize(),
+            ctx.cellSize(),
+            ctx.cellSize(),
+            null
+        );
+    }
 }

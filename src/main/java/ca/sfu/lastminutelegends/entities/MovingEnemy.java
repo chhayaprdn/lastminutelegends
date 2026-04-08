@@ -1,12 +1,12 @@
 package ca.sfu.lastminutelegends.entities;
 
 import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameState;
 import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.ui.TextureLoader;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,11 +24,7 @@ public class MovingEnemy extends MovingEntity {
             Arrays.asList(Direction.UP, Direction.LEFT, Direction.DOWN, Direction.RIGHT);
 
     static {
-        try {
-            TEXTURE = ImageIO.read(MovingEnemy.class.getResourceAsStream("/textures/enemy.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        TEXTURE = TextureLoader.load("enemy.png");
     }
     
     public MovingEnemy(Position startPos) {
@@ -59,14 +55,14 @@ public class MovingEnemy extends MovingEntity {
     }
 
     @Override
-    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
-        g.drawImage(
-            TEXTURE, 
-            offsetX + position.x * cellSize, 
-            offsetY + position.y * cellSize, 
-            cellSize, 
-            cellSize, 
-            null
-        );
+    public void onCollideWithPlayer() {
+        super.onCollideWithPlayer();
+
+        Game.instance().setState(GameState.Lost);
+    }
+
+    @Override
+    protected BufferedImage getTexture() {
+        return TEXTURE;
     }
 }

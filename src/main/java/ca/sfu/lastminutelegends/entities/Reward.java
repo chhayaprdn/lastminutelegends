@@ -1,7 +1,6 @@
 package ca.sfu.lastminutelegends.entities;
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import ca.sfu.lastminutelegends.Game;
 
 /**
  * Abstract base class for all rewards in the game
@@ -20,7 +19,18 @@ public abstract class Reward extends Entity {
         this.pointValue = pointValue;
         this.collected = false;
     }
-    
+
+    @Override
+    public void onCollideWithPlayer() {
+        super.onCollideWithPlayer();
+        
+        if (collected) return;
+        
+        collect();
+        Game.instance().addScore(pointValue);
+        markForDeletion();
+    }
+
     public int getPointValue() {
         return pointValue;
     }
@@ -31,28 +41,5 @@ public abstract class Reward extends Entity {
     
     public void collect() {
         this.collected = true;
-    }
-
-    /**
-     * @param g        the graphics context
-     * @param cellSize pixel size of one board cell
-     * @param offsetX  horizontal pixel offset of the board origin
-     * @param offsetY  vertical pixel offset of the board origin
-     */
-    @Override
-    public abstract void render(Graphics g, int cellSize, int offsetX, int offsetY);
-
-    protected void drawTexture(Graphics g, BufferedImage texture, int cellSize, int offsetX, int offsetY) {
-        if (texture == null) {
-            return;
-        }
-        g.drawImage(
-            texture,
-            position.getPixelX(cellSize, offsetX),
-            position.getPixelY(cellSize, offsetY),
-            cellSize,
-            cellSize,
-            null
-        );
     }
 }

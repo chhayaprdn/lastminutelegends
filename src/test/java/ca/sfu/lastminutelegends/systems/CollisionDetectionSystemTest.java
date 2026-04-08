@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CollisionDetectionSystemTest {
 
     private CollisionDetectionSystem system;
+    private Board board;
 
     /**
      * Resets shared game state before each test.
@@ -33,8 +34,10 @@ public class CollisionDetectionSystemTest {
         
         Game.instance().setState(GameState.Playing);
         Game.instance().setPlayer(null);
-        Game.instance().setBoard(null);
+        
         system = new CollisionDetectionSystem();
+        board = TestUtils.makeBoard("...");
+        Game.instance().setBoard(board);
     }
 
     /**
@@ -42,9 +45,6 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerCollisionWithEnemyCausesLoss() {
-        Board board = TestUtils.makeBoard("...");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         MovingEnemy enemy = new MovingEnemy(new Position(1, 0));
 
@@ -62,9 +62,6 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerCollisionWithPunishmentReducesScore() {
-        Board board = TestUtils.makeBoard("...");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         Punishment punishment = new Punishment(new Position(1, 0));
 
@@ -75,7 +72,7 @@ public class CollisionDetectionSystemTest {
         system.tick(0);
 
         assertEquals(0, Game.instance().getScore());
-        assertFalse(Game.instance().getEntities().contains(punishment));
+        assertTrue(Game.instance().getMarkedEntities().contains(punishment));
     }
 
     /**
@@ -83,9 +80,6 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerCollectsRewardAndScoreIncreases() {
-        Board board = TestUtils.makeBoard("...");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         RegularReward reward = new RegularReward(new Position(1, 0));
 
@@ -96,7 +90,7 @@ public class CollisionDetectionSystemTest {
         system.tick(0);
 
         assertEquals(10, Game.instance().getScore());
-        assertFalse(Game.instance().getEntities().contains(reward));
+        assertTrue(Game.instance().getMarkedEntities().contains(reward));
     }
 
     /**
@@ -104,9 +98,6 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void expiredBonusRewardIsNotCollected() {
-        Board board = TestUtils.makeBoard("...");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         BonusReward bonus = new BonusReward(new Position(1, 0), 50, 1);
 
@@ -127,7 +118,7 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerDoesNotWinIfRewardsRemain() {
-        Board board = TestUtils.makeBoard("S.E");
+        board = TestUtils.makeBoard("S.E");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(2, 0));
@@ -147,7 +138,7 @@ public class CollisionDetectionSystemTest {
      */
     @Test
     void playerWinsIfNoRewardsRemain() {
-        Board board = TestUtils.makeBoard("S.E");
+        board = TestUtils.makeBoard("S.E");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(2, 0));

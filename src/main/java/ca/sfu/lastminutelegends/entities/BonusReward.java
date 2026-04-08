@@ -7,13 +7,19 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.render.RenderContext;
+import ca.sfu.lastminutelegends.ui.TextureLoader;
 
 /**
  * A bonus reward (coffee) that spawns randomly and disappears after a fixed number
  * of ticks if not collected.
  */
 public class BonusReward extends Reward {
-    private static final BufferedImage TEXTURE = TextureLoader.loadTexture("/textures/bonusReward.png");
+    private static final BufferedImage TEXTURE;
+
+    static {
+        TEXTURE = TextureLoader.load("bonusReward.png");
+    }
     
     private int timeToLive;
     private final int maxTTL;
@@ -44,7 +50,14 @@ public class BonusReward extends Reward {
             timeToLive--;
         }
     }
-    
+
+    @Override
+    public void onCollideWithPlayer() {
+        if (isExpired()) return;
+            
+        super.onCollideWithPlayer();
+    }
+
     public boolean isExpired() {
         return timeToLive <= 0 && !isCollected();
     }
@@ -52,24 +65,29 @@ public class BonusReward extends Reward {
     public float getTimeRemainingPercentage() {
         return (float) timeToLive / maxTTL;
     }
+    
+    @Override
+    protected BufferedImage getTexture() {
+        return TEXTURE;
+    }
+
     /**
      * Renders the reward texture with alpha tied to remaining time.
      * Nothing is drawn if collected, expired, or the texture failed to load.
      *
-     * @param g        the graphics context
-     * @param cellSize pixel size of one board cell
-     * @param offsetX  horizontal pixel offset of the board origin
-     * @param offsetY  vertical pixel offset of the board origin
+     * @param ctx the render context. Contains cell size, offsets
      */
     @Override
-    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
+    public void render(RenderContext ctx) {
         if (isCollected() || isExpired() || TEXTURE == null) return;
+
+        Graphics g = ctx.g();
         if (!(g instanceof Graphics2D g2d)) return;
 
         Composite saved = g2d.getComposite();
         try {
             g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getTimeRemainingPercentage()));
-            drawTexture(g2d, TEXTURE, cellSize, offsetX, offsetY);
+            super.render(ctx);
         } finally {
             g2d.setComposite(saved);
         }

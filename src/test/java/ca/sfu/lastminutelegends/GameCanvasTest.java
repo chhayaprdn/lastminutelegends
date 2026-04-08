@@ -45,7 +45,7 @@ public class GameCanvasTest {
         
         canvas.paintComponent(g);
         
-        assertEquals(Color.LIGHT_GRAY, new Color(image.getRGB(800, 600)));
+        assertEquals(new Color(20, 25, 43), new Color(image.getRGB(800, 600)));
     }
 
     @Test
