@@ -18,7 +18,12 @@ public class EntityRenderer implements GameSystem {
     @Override
     public void render(Graphics g) {
         for (Entity e : Game.instance().getEntities()) {
-            e.render(g, Game.instance().getCellSize(), Game.instance().getBoardOffsetX(), Game.instance().getBoardOffsetY());
+            e.render(
+                g,
+                Game.instance().getCanvas().getCellSize(),
+                Game.instance().getCanvas().getBoardOffsetX(),
+                Game.instance().getCanvas().getBoardOffsetY()
+            );
         }
     }
 }

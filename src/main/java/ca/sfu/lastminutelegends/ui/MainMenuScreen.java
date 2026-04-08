@@ -15,9 +15,8 @@ import ca.sfu.lastminutelegends.Game;
 public class MainMenuScreen implements Screen {
     @Override
     public void render(Graphics g) {
-        if (g == null) return;
-        int canvasWidth = Game.instance().getCanvasWidth();
-        int canvasHeight = Game.instance().getCanvasHeight();
+        int canvasWidth = Game.instance().getCanvas().getCanvasWidth();
+        int canvasHeight = Game.instance().getCanvas().getCanvasHeight();
 
         Graphics2D g2 = (Graphics2D) g.create();
         // HiDPI / smooth text
@@ -29,7 +28,6 @@ public class MainMenuScreen implements Screen {
 
         // Choose font sizes relative to canvas width/height
         int titleSize = Math.max(36, canvasWidth / 10);
-        int subtitleSize = Math.max(28, canvasWidth / 20);
         int hintSize = Math.max(14, canvasWidth / 40);
 
         Font titleFont = new Font("Arial", Font.BOLD, titleSize);
@@ -41,6 +39,7 @@ public class MainMenuScreen implements Screen {
         // First title line
         g2.setFont(titleFont);
         FontMetrics fmTitle = g2.getFontMetrics();
+
         String firstTitleLine = "LAST-MINUTE";
         int xTitle1 = (canvasWidth - fmTitle.stringWidth(firstTitleLine)) / 2;
         int yTitle = (int) (canvasHeight * 0.30); // relative vertical position

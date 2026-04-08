@@ -3,7 +3,6 @@ package ca.sfu.lastminutelegends.entities;
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.Board;
 
-import java.awt.*;
 
 public abstract class MovingEntity extends Entity {
     public MovingEntity(Position startPos) {

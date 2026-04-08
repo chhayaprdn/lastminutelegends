@@ -3,7 +3,6 @@ package ca.sfu.lastminutelegends;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -19,7 +18,6 @@ public class BoardPanel extends JPanel {
 
     private final GameBoard board;
     private final JLabel scoreLabel;
-
     private boolean gameOver = false;
 
     /**
@@ -31,7 +29,6 @@ public class BoardPanel extends JPanel {
     public BoardPanel(GameBoard board, JLabel scoreLabel) {
         this.board = board;
         this.scoreLabel = scoreLabel;
-
         setPreferredSize(new Dimension(GameBoard.COLS * CELL_SIZE, GameBoard.ROWS * CELL_SIZE));
         setBackground(Color.LIGHT_GRAY);
     }
@@ -45,26 +42,26 @@ public class BoardPanel extends JPanel {
      * @param dCol change in column
      */
     public void movePlayer(int dRow, int dCol) {
-    if (gameOver) {
-        return;
+        if (gameOver) {
+            return;
+        }
+
+        board.movePlayer(dRow, dCol);
+        scoreLabel.setText("Score: " + board.getScore());
+        checkGameState();
+        repaint();
     }
 
-    board.movePlayer(dRow, dCol);
-    scoreLabel.setText("Score: " + board.getScore());
-    checkGameState();
-    repaint();
- }
+    private void checkGameState() {
+        if (!board.isAtExit()) return;
 
-private void checkGameState() {
-    if (!board.isAtExit()) return;
-
-    if (board.allRewardsCollected()) {
-        javax.swing.JOptionPane.showMessageDialog(this, "You win!");
-        gameOver = true;
-    } else {
-        javax.swing.JOptionPane.showMessageDialog(this, "Collect all rewards first!");
+        if (board.allRewardsCollected()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "You win!");
+            gameOver = true;
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this, "Collect all rewards first!");
+        }
     }
- }
 
     /**
      * Draws the full board including walls, rewards, grid lines,
@@ -92,13 +89,10 @@ private void checkGameState() {
             }
         }
 
-
         g.setColor(Color.BLACK);
-
         for (int row = 0; row <= GameBoard.ROWS; row++) {
             g.drawLine(0, row * CELL_SIZE, GameBoard.COLS * CELL_SIZE, row * CELL_SIZE);
         }
-
         for (int col = 0; col <= GameBoard.COLS; col++) {
             g.drawLine(col * CELL_SIZE, 0, col * CELL_SIZE, GameBoard.ROWS * CELL_SIZE);
         }

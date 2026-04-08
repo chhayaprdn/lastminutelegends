@@ -34,19 +34,19 @@ import ca.sfu.lastminutelegends.entities.RegularReward;
 public class RewardCollectionIntegrationTest {
 
     private CollisionDetectionSystem collisionSystem;
+    private Board board;
 
     @BeforeEach
     void setup() throws NoSuchFieldException, IllegalAccessException {
         TestUtils.resetGameInstance();
         Game.instance().setState(GameState.Playing);
         collisionSystem = new CollisionDetectionSystem();
+        board = TestUtils.makeBoard("S.E");
+        Game.instance().setBoard(board);
     }
 
     @Test
     void playerSteppingOnRegularRewardIncreasesScore() {
-        Board board = TestUtils.makeBoard("S.E");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         RegularReward reward = new RegularReward(new Position(1, 0));
 
@@ -61,9 +61,6 @@ public class RewardCollectionIntegrationTest {
 
     @Test
     void playerSteppingOnRegularRewardRemovesItFromBoard() {
-        Board board = TestUtils.makeBoard("S.E");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         RegularReward reward = new RegularReward(new Position(1, 0));
 
@@ -78,9 +75,6 @@ public class RewardCollectionIntegrationTest {
 
     @Test
     void playerSteppingOnBonusRewardIncreasesScore() {
-        Board board = TestUtils.makeBoard("S.E");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         BonusReward bonus = new BonusReward(new Position(1, 0), 25, 10);
 
@@ -95,9 +89,6 @@ public class RewardCollectionIntegrationTest {
 
     @Test
     void expiredBonusRewardIsNotCollectedWhenSteppedOn() {
-        Board board = TestUtils.makeBoard("S.E");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         BonusReward bonus = new BonusReward(new Position(1, 0), 25, 1);
 
@@ -116,7 +107,7 @@ public class RewardCollectionIntegrationTest {
 
     @Test
     void collectingOneRewardDoesNotAffectOthers() {
-        Board board = TestUtils.makeBoard("S..E");
+        board = TestUtils.makeBoard("S..E");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(1, 0));
@@ -139,7 +130,7 @@ public class RewardCollectionIntegrationTest {
 
     @Test
     void scoreAccumulatesAcrossMultipleCollections() {
-        Board board = TestUtils.makeBoard("S..E");
+        board = TestUtils.makeBoard("S..E");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(1, 0));
@@ -162,9 +153,6 @@ public class RewardCollectionIntegrationTest {
 
     @Test
     void collectingAllRegularRewardsAndReachingEndpointWins() {
-        Board board = TestUtils.makeBoard("S.E");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(2, 0)); // on endpoint
         RegularReward reward = new RegularReward(new Position(1, 0));
 
@@ -183,9 +171,6 @@ public class RewardCollectionIntegrationTest {
 
     @Test
     void reachingEndpointWithRemainingRewardsDoesNotWin() {
-        Board board = TestUtils.makeBoard("S.E");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(2, 0)); // on endpoint
         RegularReward reward = new RegularReward(new Position(1, 0)); // not collected
 
