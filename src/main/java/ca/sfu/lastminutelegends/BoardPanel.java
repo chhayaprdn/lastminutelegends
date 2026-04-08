@@ -45,25 +45,26 @@ public class BoardPanel extends JPanel {
      * @param dCol change in column
      */
     public void movePlayer(int dRow, int dCol) {
-        if (gameOver) {
-            return;
-        }
-
-        board.movePlayer(dRow, dCol);
-        scoreLabel.setText("Score: " + board.getScore());
-
-        if (board.isAtExit()) {
-            if (board.allRewardsCollected()) {
-                javax.swing.JOptionPane.showMessageDialog(this, "You win!");
-                gameOver = true;
-            } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Collect all rewards first!");
-            }
-            return;
-        }
-
-        repaint();
+    if (gameOver) {
+        return;
     }
+
+    board.movePlayer(dRow, dCol);
+    scoreLabel.setText("Score: " + board.getScore());
+    checkGameState();
+    repaint();
+ }
+
+private void checkGameState() {
+    if (!board.isAtExit()) return;
+
+    if (board.allRewardsCollected()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "You win!");
+        gameOver = true;
+    } else {
+        javax.swing.JOptionPane.showMessageDialog(this, "Collect all rewards first!");
+    }
+ }
 
     /**
      * Draws the full board including walls, rewards, grid lines,
