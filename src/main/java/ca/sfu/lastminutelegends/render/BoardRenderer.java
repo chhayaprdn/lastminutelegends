@@ -1,4 +1,4 @@
-package ca.sfu.lastminutelegends.systems;
+package ca.sfu.lastminutelegends.render;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.*;
@@ -7,7 +7,7 @@ import ca.sfu.lastminutelegends.ui.TextureLoader;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class BoardRenderer implements GameSystem {
+public class BoardRenderer implements GameRenderer {
     private static final BufferedImage WALL_TEXTURE;
     private static final BufferedImage FLOOR_TEXTURE;
     private static final BufferedImage DOOR_TEXTURE;
@@ -16,11 +16,6 @@ public class BoardRenderer implements GameSystem {
         WALL_TEXTURE = TextureLoader.load("wall.png");
         FLOOR_TEXTURE = TextureLoader.load("floor.png");
         DOOR_TEXTURE = TextureLoader.load("door.png");
-    }
-    
-    @Override
-    public void tick(int tick) {
-        
     }
 
     @Override

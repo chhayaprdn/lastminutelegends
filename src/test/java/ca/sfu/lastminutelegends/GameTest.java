@@ -103,9 +103,6 @@ public class GameTest {
         public void tick(int tick) {
             this.tick = tick;
         }
-
-        @Override
-        public void render(Graphics g) {}
     }
     
     @Test

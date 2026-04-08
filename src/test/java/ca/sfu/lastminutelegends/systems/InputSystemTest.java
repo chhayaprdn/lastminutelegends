@@ -8,7 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.JPanel;
-import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -132,14 +131,5 @@ public class InputSystemTest {
         input.tick(1);
 
         assertNull(input.consumeDirection());
-    }
-
-    @Test
-    void testRenderDoesNotCrash() {
-        Graphics g = panel.getGraphics();
-
-        input.render(g);
-
-        assertTrue(true);
     }
 }

@@ -23,9 +23,4 @@ public class PlayerSystem implements GameSystem {
         Direction dir = input.consumeDirection();
         Game.instance().getPlayer().tryMove(dir, Game.instance().getBoard());
     }
-
-    @Override
-    public void render(Graphics g) {
-        // Rendering is handled by EntityRenderer.
-    }
 }

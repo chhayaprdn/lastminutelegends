@@ -19,6 +19,7 @@ public class GameCanvasIntegrationTest {
         
         Game.instance().loadBoard();
         Game.instance().loadSystems();
+        Game.instance().loadRenderers();
         Game.instance().setState(GameState.Playing);
         
         canvas.paintComponent(g);

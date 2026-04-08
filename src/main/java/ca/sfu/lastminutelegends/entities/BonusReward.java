@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.render.RenderContext;
 import ca.sfu.lastminutelegends.ui.TextureLoader;
 
 /**
@@ -44,6 +45,13 @@ public class BonusReward extends Reward {
         }
     }
 
+    @Override
+    public void onCollideWithPlayer() {
+        if (isExpired()) return;
+            
+        super.onCollideWithPlayer();
+    }
+
     public boolean isExpired() {
         return timeToLive <= 0 && !collected;
     }
@@ -56,32 +64,21 @@ public class BonusReward extends Reward {
     protected BufferedImage getTexture() {
         return TEXTURE;
     }
-    
+
     /**
-     * Renders the reward as a fading coffee-brown square with a countdown.
-     * Nothing is drawn if collected or expired.
+     * Render the entity on the game canvas
      *
-     * @param g        the graphics context
-     * @param cellSize pixel size of one board cell
-     * @param offsetX  horizontal pixel offset of the board origin
-     * @param offsetY  vertical pixel offset of the board origin
+     * @param ctx the render context. Contains cell size, offsets
      */
     @Override
-    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
+    public void render(RenderContext ctx) {
         if (collected || isExpired()) return;
 
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) ctx.g();
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getTimeRemainingPercentage()));
 
-        g2d.drawImage(
-            TEXTURE,
-            offsetX + position.x * cellSize,
-            offsetY + position.y * cellSize,
-            cellSize,
-            cellSize,
-            null
-        );
-
+        super.render(ctx);
+        
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
     }
 }

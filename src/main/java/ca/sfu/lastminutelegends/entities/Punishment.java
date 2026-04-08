@@ -1,5 +1,6 @@
 package ca.sfu.lastminutelegends.entities;
 
+import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.ui.TextureLoader;
 
 import java.awt.image.BufferedImage;
@@ -13,6 +14,14 @@ public class Punishment extends Entity {
     
     public Punishment(Position position) {
         super(position);
+    }
+
+    @Override
+    public void onCollideWithPlayer() {
+        super.onCollideWithPlayer();
+
+        Game.instance().addScore(-25);
+        markForDeletion();
     }
 
     @Override

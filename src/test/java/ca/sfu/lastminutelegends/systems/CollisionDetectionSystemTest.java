@@ -72,7 +72,7 @@ public class CollisionDetectionSystemTest {
         system.tick(0);
 
         assertEquals(0, Game.instance().getScore());
-        assertFalse(Game.instance().getEntities().contains(punishment));
+        assertTrue(Game.instance().getMarkedEntities().contains(punishment));
     }
 
     /**
@@ -90,7 +90,7 @@ public class CollisionDetectionSystemTest {
         system.tick(0);
 
         assertEquals(10, Game.instance().getScore());
-        assertFalse(Game.instance().getEntities().contains(reward));
+        assertTrue(Game.instance().getMarkedEntities().contains(reward));
     }
 
     /**

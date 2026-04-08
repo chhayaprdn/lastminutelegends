@@ -3,7 +3,6 @@ package ca.sfu.lastminutelegends;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -17,39 +16,17 @@ public class BoardPanel extends JPanel {
     private static final int REWARD_SIZE = CELL_SIZE * 3 / 5;
 
     private final GameBoard board;
-    private final JLabel scoreLabel;
     private boolean gameOver = false;
 
     /**
      * Creates a board panel using the given game board and score label.
      *
      * @param board the game board storing game state
-     * @param scoreLabel the label used to display the score
      */
-    public BoardPanel(GameBoard board, JLabel scoreLabel) {
+    public BoardPanel(GameBoard board) {
         this.board = board;
-        this.scoreLabel = scoreLabel;
         setPreferredSize(new Dimension(GameBoard.COLS * CELL_SIZE, GameBoard.ROWS * CELL_SIZE));
         setBackground(Color.LIGHT_GRAY);
-    }
-
-    /**
-     * Moves the player on the board and updates the UI.
-     * If the player reaches the exit with all rewards collected,
-     * the game displays a win message and stops further movement.
-     *
-     * @param dRow change in row
-     * @param dCol change in column
-     */
-    public void movePlayer(int dRow, int dCol) {
-        if (gameOver) {
-            return;
-        }
-
-        board.movePlayer(dRow, dCol);
-        scoreLabel.setText("Score: " + board.getScore());
-        checkGameState();
-        repaint();
     }
 
     private void checkGameState() {

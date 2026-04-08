@@ -1,5 +1,7 @@
 package ca.sfu.lastminutelegends.entities;
 
+import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameState;
 import ca.sfu.lastminutelegends.board.Board;
 import ca.sfu.lastminutelegends.ui.TextureLoader;
 
@@ -50,6 +52,13 @@ public class MovingEnemy extends MovingEntity {
         if (best != null) {
             position = position.move(best);
         }
+    }
+
+    @Override
+    public void onCollideWithPlayer() {
+        super.onCollideWithPlayer();
+
+        Game.instance().setState(GameState.Lost);
     }
 
     @Override

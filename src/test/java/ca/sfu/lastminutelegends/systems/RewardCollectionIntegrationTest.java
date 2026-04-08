@@ -70,7 +70,7 @@ public class RewardCollectionIntegrationTest {
 
         collisionSystem.tick(0);
 
-        assertFalse(Game.instance().getEntities().contains(reward));
+        assertTrue(Game.instance().getMarkedEntities().contains(reward));
     }
 
     @Test
@@ -122,7 +122,7 @@ public class RewardCollectionIntegrationTest {
         collisionSystem.tick(0);
 
         // r1 collected, r2 untouched
-        assertFalse(Game.instance().getEntities().contains(r1));
+        assertTrue(Game.instance().getMarkedEntities().contains(r1));
         assertTrue(Game.instance().getEntities().contains(r2));
         assertFalse(r2.isCollected());
         assertEquals(10, Game.instance().getScore());

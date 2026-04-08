@@ -1,6 +1,6 @@
 package ca.sfu.lastminutelegends;
 
-import ca.sfu.lastminutelegends.systems.HudRenderer;
+import ca.sfu.lastminutelegends.render.HudRenderer;
 import ca.sfu.lastminutelegends.ui.GameScreen;
 import ca.sfu.lastminutelegends.ui.LossScreen;
 import ca.sfu.lastminutelegends.ui.MainMenuScreen;

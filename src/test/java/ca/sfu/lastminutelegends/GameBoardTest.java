@@ -54,13 +54,36 @@ public class GameBoardTest {
     @Test
     void testAllRewardsCollectedTrue() {
         GameBoard board = new GameBoard();
-
-        boolean[][] rewards = board.getRewards();
-        for (int r = 0; r < GameBoard.ROWS; r++) {
-            for (int c = 0; c < GameBoard.COLS; c++) {
-                rewards[r][c] = false;
-            }
-        }
+        
+        // Path around the board and collect all rewards
+        board.movePlayer(0, 1);
+        board.movePlayer(0, 1);
+        board.movePlayer(0, 1);              
+        board.movePlayer(0, 1);
+        board.movePlayer(1, 0);
+        board.movePlayer(1, 0);
+        board.movePlayer(1, 0);
+        board.movePlayer(1, 0);
+        board.movePlayer(0, -1);
+        board.movePlayer(0, -1);
+        board.movePlayer(-1, 0);
+        board.movePlayer(-1, 0);
+        board.movePlayer(1, 0);
+        board.movePlayer(1, 0);
+        board.movePlayer(0, -1);
+        board.movePlayer(1, 0);
+        board.movePlayer(1, 0);
+        board.movePlayer(0, 1);
+        board.movePlayer(0, 1);
+        board.movePlayer(0, 1);
+        board.movePlayer(1, 0);
+        board.movePlayer(0, 1);
+        board.movePlayer(0, 1);
+        board.movePlayer(0, 1);
+        board.movePlayer(-1, 0);
+        board.movePlayer(1, 0);
+        board.movePlayer(1, 0);
+        board.movePlayer(0, 1);
 
         assertTrue(board.allRewardsCollected());
     }

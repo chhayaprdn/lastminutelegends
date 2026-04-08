@@ -22,9 +22,4 @@ public class EnemySystem implements GameSystem {
             }
         }
     }
-
-    @Override
-    public void render(Graphics g) {
-        // Rendering is handled by EntityRenderer.
-    }
 }
