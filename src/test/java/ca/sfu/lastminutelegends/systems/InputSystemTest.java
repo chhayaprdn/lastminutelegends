@@ -133,13 +133,4 @@ public class InputSystemTest {
 
         assertNull(input.consumeDirection());
     }
-
-    @Test
-    void testRenderDoesNotCrash() {
-        Graphics g = panel.getGraphics();
-
-        input.render(g);
-
-        assertTrue(true);
-    }
 }

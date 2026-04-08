@@ -29,21 +29,11 @@ public class RewardSystem implements GameSystem {
      */
     @Override
     public void tick(int tick) {
-    if (tick % 5 != 0)
-        return;
-
-    expireOldBonusRewards();
-    trySpawnBonus();
-}
-
-    /**
-     * No rendering is done here. Each reward's own render() method is called
-     * by EntityRenderer as part of its pass over Game.getEntities().
-     *
-     * @param g the graphics context (unused)
-     */
-    @Override
-    public void render(Graphics g) {
+        if (tick % 5 != 0)
+            return;
+    
+        expireOldBonusRewards();
+        trySpawnBonus();
     }
 
     /**

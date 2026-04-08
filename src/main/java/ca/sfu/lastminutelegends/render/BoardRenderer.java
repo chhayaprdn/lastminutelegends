@@ -1,4 +1,4 @@
-package ca.sfu.lastminutelegends.systems;
+package ca.sfu.lastminutelegends.render;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.*;
@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class BoardRenderer implements GameSystem {
+public class BoardRenderer implements GameRenderer {
     private static final BufferedImage WALL_TEXTURE;
     private static final BufferedImage FLOOR_TEXTURE;
     private static final BufferedImage DOOR_TEXTURE;
@@ -21,11 +21,6 @@ public class BoardRenderer implements GameSystem {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
-    
-    @Override
-    public void tick(int tick) {
-        
     }
 
     @Override

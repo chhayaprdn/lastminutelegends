@@ -12,9 +12,4 @@ public class TimerSystem implements GameSystem {
         
         Game.instance().incrementTimer();
     }
-
-    @Override
-    public void render(Graphics g) {
-
-    }
 }

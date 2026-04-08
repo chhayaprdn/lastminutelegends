@@ -72,6 +72,7 @@ public class GameIntegrationTest {
         game.setCanvas(new GameCanvas());
         game.loadBoard();
         game.loadSystems();
+        game.loadRenderers();
         game.setState(GameState.Playing);
         
         var optionalEnemy = game.getEntities().stream().filter(e -> e instanceof MovingEnemy).findFirst();

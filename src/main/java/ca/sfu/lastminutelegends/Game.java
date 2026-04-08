@@ -13,12 +13,13 @@ import ca.sfu.lastminutelegends.board.BoardReader;
 import ca.sfu.lastminutelegends.entities.Entity;
 import ca.sfu.lastminutelegends.entities.EntityPlacer;
 import ca.sfu.lastminutelegends.entities.Player;
-import ca.sfu.lastminutelegends.systems.BoardRenderer;
+import ca.sfu.lastminutelegends.render.BoardRenderer;
+import ca.sfu.lastminutelegends.render.GameRenderer;
 import ca.sfu.lastminutelegends.systems.CollisionDetectionSystem;
 import ca.sfu.lastminutelegends.systems.EnemySystem;
-import ca.sfu.lastminutelegends.systems.EntityRenderer;
+import ca.sfu.lastminutelegends.render.EntityRenderer;
 import ca.sfu.lastminutelegends.systems.GameSystem;
-import ca.sfu.lastminutelegends.systems.HudRenderer;
+import ca.sfu.lastminutelegends.render.HudRenderer;
 import ca.sfu.lastminutelegends.systems.InputSystem;
 import ca.sfu.lastminutelegends.systems.PlayerSystem;
 import ca.sfu.lastminutelegends.systems.RewardSystem;
@@ -31,6 +32,7 @@ public class Game {
     private GameCanvas canvas;
     private Board board;
     private List<GameSystem> systems;
+    private List<GameRenderer> renderers;
     private List<Entity> entities;
     private GameState state;
     private int tick;
@@ -40,6 +42,7 @@ public class Game {
 
     private Game() {
         this.systems = new ArrayList<>();
+        this.renderers = new ArrayList<>();
         this.entities = new ArrayList<>();
         this.state = GameState.Menu;
         this.tick = 0;
@@ -67,6 +70,7 @@ public class Game {
 
         loadBoard();
         loadSystems();
+        loadRenderers();
     }
 
     /** Starts the tick loop with 100ms interval and render loop with 16ms interval */
@@ -110,17 +114,28 @@ public class Game {
         addSystem(new RewardSystem());
         addSystem(new CollisionDetectionSystem());
         addSystem(new TimerSystem());
-        addSystem(new BoardRenderer());
-        addSystem(new EntityRenderer());
-        addSystem(new HudRenderer());
+    }
+    
+    void loadRenderers() {
+        addRenderer(new BoardRenderer());
+        addRenderer(new EntityRenderer());
+        addRenderer(new HudRenderer());
     }
 
     void addSystem(GameSystem system) {
         this.systems.add(system);
     }
+    
+    void addRenderer(GameRenderer renderer) {
+        this.renderers.add(renderer);
+    }
 
     public List<GameSystem> getSystems() {
         return this.systems;
+    }
+    
+    public List<GameRenderer> getRenderers() {
+        return this.renderers;
     }
 
     public GameState getState() {

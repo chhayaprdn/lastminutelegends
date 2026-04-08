@@ -79,9 +79,4 @@ public class CollisionDetectionSystem implements GameSystem {
             game.setState(GameState.Won);
         }
     }
-
-    @Override
-    public void render(Graphics g) {
-        // nothing
-    }
 }

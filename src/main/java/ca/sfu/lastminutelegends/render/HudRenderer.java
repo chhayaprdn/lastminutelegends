@@ -1,17 +1,12 @@
-package ca.sfu.lastminutelegends.systems;
+package ca.sfu.lastminutelegends.render;
 
 import ca.sfu.lastminutelegends.Game;
 
 import java.awt.*;
 
-public class HudRenderer implements GameSystem {
+public class HudRenderer implements GameRenderer {
     public static int TIMER_WIDTH = 200;
     public static int SCORE_WIDTH = 200;
-    
-    @Override
-    public void tick(int tick) {
-        
-    }
 
     @Override
     public void render(Graphics g) {

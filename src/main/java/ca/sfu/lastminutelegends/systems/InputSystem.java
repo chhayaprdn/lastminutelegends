@@ -51,9 +51,4 @@ public class InputSystem implements GameSystem {
     public void tick(int tick) {
         // Input is event-driven (KeyListener), so no per-tick logic needed here.
     }
-
-    @Override
-    public void render(Graphics g) {
-        // Nothing to render for input.
-    }
 }
