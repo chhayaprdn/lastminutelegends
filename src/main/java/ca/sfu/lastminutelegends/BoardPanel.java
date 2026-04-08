@@ -85,17 +85,13 @@ private void checkGameState() {
                     g.setColor(Color.DARK_GRAY);
                     g.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 }
-            }
-        }
-
-        for (int row = 0; row < GameBoard.ROWS; row++) {
-            for (int col = 0; col < GameBoard.COLS; col++) {
                 if (rewards[row][col]) {
                     g.setColor(Color.YELLOW);
                     g.fillOval(col * CELL_SIZE + REWARD_PADDING, row * CELL_SIZE + REWARD_PADDING, REWARD_SIZE, REWARD_SIZE);
                 }
             }
         }
+
 
         g.setColor(Color.BLACK);
 
