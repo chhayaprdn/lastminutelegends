@@ -13,12 +13,12 @@ public class EntityRenderer implements GameRenderer {
     @Override
     public void render(Graphics g) {
         for (Entity e : Game.instance().getEntities()) {
-            e.render(
+            e.render(new RenderContext(
                 g,
                 Game.instance().getCanvas().getCellSize(),
                 Game.instance().getCanvas().getBoardOffsetX(),
                 Game.instance().getCanvas().getBoardOffsetY()
-            );
+            ));
         }
     }
 }

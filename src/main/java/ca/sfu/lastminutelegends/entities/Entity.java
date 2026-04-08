@@ -2,6 +2,7 @@ package ca.sfu.lastminutelegends.entities;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.Board;
+import ca.sfu.lastminutelegends.render.RenderContext;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -46,21 +47,18 @@ public abstract class Entity {
     /**
      * Render the entity on the game canvas
      * 
-     * @param g        the graphics context
-     * @param cellSize pixel size of one board cell
-     * @param offsetX  horizontal pixel offset of the board origin
-     * @param offsetY  vertical pixel offset of the board origin
+     * @param ctx the render context. Contains cell size, offsets
      */
-    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
+    public void render(RenderContext ctx) {
         if (getTexture() == null)
             return;
         
-        g.drawImage(
+        ctx.g().drawImage(
             getTexture(),
-            offsetX + position.x * cellSize,
-            offsetY + position.y * cellSize,
-            cellSize,
-            cellSize,
+            ctx.offsetX() + position.x * ctx.cellSize(),
+            ctx.offsetY() + position.y * ctx.cellSize(),
+            ctx.cellSize(),
+            ctx.cellSize(),
             null
         );
     }
