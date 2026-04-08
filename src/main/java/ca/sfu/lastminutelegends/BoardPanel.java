@@ -3,6 +3,7 @@ package ca.sfu.lastminutelegends;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -13,6 +14,8 @@ import javax.swing.JPanel;
  */
 public class BoardPanel extends JPanel {
     private static final int CELL_SIZE = 50;
+    private static final int REWARD_PADDING = CELL_SIZE / 5;
+    private static final int REWARD_SIZE = CELL_SIZE * 3 / 5;
 
     private final GameBoard board;
     private final JLabel scoreLabel;
@@ -88,7 +91,7 @@ public class BoardPanel extends JPanel {
             for (int col = 0; col < GameBoard.COLS; col++) {
                 if (rewards[row][col]) {
                     g.setColor(Color.YELLOW);
-                    g.fillOval(col * CELL_SIZE + 10, row * CELL_SIZE + 10, 30, 30);
+                    g.fillOval(col * CELL_SIZE + REWARD_PADDING, row * CELL_SIZE + REWARD_PADDING, REWARD_SIZE, REWARD_SIZE);
                 }
             }
         }
