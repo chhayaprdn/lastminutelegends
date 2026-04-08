@@ -153,6 +153,21 @@ public class Game {
         this.state = state;
     }
 
+    /**
+     * Clears run state, reloads the board and entities from disk, and starts a new game.
+     */
+    public void restartGame() {
+        entities.clear();
+        score = 0;
+        timer = 0;
+        tick = 0;
+        loadBoard();
+        state = GameState.Playing;
+        if (canvas != null) {
+            canvas.requestFocusInWindow();
+        }
+    }
+
     public Board getBoard() {
         return board;
     }

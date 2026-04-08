@@ -7,8 +7,8 @@ import ca.sfu.lastminutelegends.Game;
  * Subclasses define point values, collection rules and appearances
  */
 public abstract class Reward extends Entity {
-    protected int pointValue;
-    protected boolean collected;
+    private int pointValue;
+    private boolean collected;
     
     /**
      * @param position   the grid cell where this reward is placed
@@ -42,5 +42,4 @@ public abstract class Reward extends Entity {
     public void collect() {
         this.collected = true;
     }
-    
 }

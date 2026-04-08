@@ -2,10 +2,7 @@ package ca.sfu.lastminutelegends.entities;
 
 import ca.sfu.lastminutelegends.ui.TextureLoader;
 
-import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 /**
  * Regular rewards (School Supplies)
@@ -13,20 +10,20 @@ import javax.imageio.ImageIO;
  */
 public class RegularReward extends Reward {
     private static final BufferedImage TEXTURE;
-    
+
     static {
         TEXTURE = TextureLoader.load("regularReward.png");
     }
 
     public RegularReward(Position position) {
-        super(position, 10); //10 points for regular rewards
+        super(position, 10);
     }
 
     @Override
     protected BufferedImage getTexture() {
-        if (collected)
+        if (isCollected()) {
             return null;
-        
+        }
         return TEXTURE;
     }
 }

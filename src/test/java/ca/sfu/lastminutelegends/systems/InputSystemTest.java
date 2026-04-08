@@ -99,16 +99,25 @@ public class InputSystemTest {
     }
 
     @Test
-    void testEnterKeyDoesNotChangeGameStateWhenNotMenu() throws NoSuchFieldException, IllegalAccessException {
+    void testEnterKeyRestartsFromWonOrLost() throws NoSuchFieldException, IllegalAccessException {
         TestUtils.resetGameInstance();
 
         Game.instance().setState(GameState.Won);
         simulateKeyPress(KeyEvent.VK_ENTER);
-        assertEquals(GameState.Won, Game.instance().getState());
-        
+        assertEquals(GameState.Playing, Game.instance().getState());
+
         Game.instance().setState(GameState.Lost);
         simulateKeyPress(KeyEvent.VK_ENTER);
-        assertEquals(GameState.Lost, Game.instance().getState());
+        assertEquals(GameState.Playing, Game.instance().getState());
+    }
+
+    @Test
+    void testEnterKeyDoesNotChangeGameStateWhenPlaying() throws NoSuchFieldException, IllegalAccessException {
+        TestUtils.resetGameInstance();
+
+        Game.instance().setState(GameState.Playing);
+        simulateKeyPress(KeyEvent.VK_ENTER);
+        assertEquals(GameState.Playing, Game.instance().getState());
     }
 
     @Test

@@ -1,6 +1,9 @@
 package ca.sfu.lastminutelegends.entities;
 
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Composite;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import ca.sfu.lastminutelegends.board.Board;
@@ -8,8 +11,8 @@ import ca.sfu.lastminutelegends.render.RenderContext;
 import ca.sfu.lastminutelegends.ui.TextureLoader;
 
 /**
-* A bonus reward (coffee) that spawns randomly and disappears after a fixed number
- * of ticks if not collected. Worth 50 points by default.
+ * A bonus reward (coffee) that spawns randomly and disappears after a fixed number
+ * of ticks if not collected.
  */
 public class BonusReward extends Reward {
     private static final BufferedImage TEXTURE;
@@ -28,6 +31,9 @@ public class BonusReward extends Reward {
      */
     public BonusReward(Position position, int pointValue, int ttl) {
         super(position, pointValue);
+        if (ttl <= 0) {
+            throw new IllegalArgumentException("ttl must be positive");
+        }
         this.maxTTL = ttl;
         this.timeToLive = ttl;
     }
@@ -40,7 +46,7 @@ public class BonusReward extends Reward {
      */
     @Override
     public void onTick(Board board, Player player) {
-        if (!collected) {
+        if (!isCollected() && timeToLive > 0) {
             timeToLive--;
         }
     }
@@ -53,7 +59,7 @@ public class BonusReward extends Reward {
     }
 
     public boolean isExpired() {
-        return timeToLive <= 0 && !collected;
+        return timeToLive <= 0 && !isCollected();
     }
     
     public float getTimeRemainingPercentage() {
@@ -66,19 +72,24 @@ public class BonusReward extends Reward {
     }
 
     /**
-     * Render the entity on the game canvas
+     * Renders the reward texture with alpha tied to remaining time.
+     * Nothing is drawn if collected, expired, or the texture failed to load.
      *
      * @param ctx the render context. Contains cell size, offsets
      */
     @Override
     public void render(RenderContext ctx) {
-        if (collected || isExpired()) return;
+        if (isCollected() || isExpired() || TEXTURE == null) return;
 
-        Graphics2D g2d = (Graphics2D) ctx.g();
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getTimeRemainingPercentage()));
+        Graphics g = ctx.g();
+        if (!(g instanceof Graphics2D g2d)) return;
 
-        super.render(ctx);
-        
-        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1.0f));
+        Composite saved = g2d.getComposite();
+        try {
+            g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, getTimeRemainingPercentage()));
+            super.render(ctx);
+        } finally {
+            g2d.setComposite(saved);
+        }
     }
 }
