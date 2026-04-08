@@ -156,6 +156,10 @@ public class GameBoard {
      * @return 2D array of reward cells
      */
     public boolean[][] getRewards() {
-        return rewards;
+    boolean[][] copy = new boolean[ROWS][COLS];
+    for (int i = 0; i < ROWS; i++) {
+        copy[i] = rewards[i].clone();
     }
+    return copy;
+  }
 }
