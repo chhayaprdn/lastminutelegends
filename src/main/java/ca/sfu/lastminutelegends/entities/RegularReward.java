@@ -20,11 +20,9 @@ public class RegularReward extends Reward {
             throw new RuntimeException(e);
         }
     }
-    
-    private static final int POINT_VALUE = 10;
 
     public RegularReward(Position position) {
-        super(position, POINT_VALUE);
+        super(position, 10); //10 points for regular rewards
     }
     
     @Override

@@ -143,8 +143,12 @@ public class GameBoard {
      * @return 2D array of wall cells
      */
     public boolean[][] getWalls() {
-        return walls;
+    boolean[][] copy = new boolean[ROWS][COLS];
+    for (int i = 0; i < ROWS; i++) {
+        copy[i] = walls[i].clone();
     }
+    return copy;
+   }
 
     /**
      * Returns the reward layout of the board.
