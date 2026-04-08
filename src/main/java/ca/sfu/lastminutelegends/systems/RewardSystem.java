@@ -1,6 +1,5 @@
 package ca.sfu.lastminutelegends.systems;
 
-import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;

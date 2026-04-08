@@ -2,7 +2,6 @@ package ca.sfu.lastminutelegends.ui;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.render.GameRenderer;
-import ca.sfu.lastminutelegends.systems.GameSystem;
 
 import java.awt.*;
 
