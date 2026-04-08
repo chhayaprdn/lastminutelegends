@@ -44,6 +44,13 @@ public class BonusReward extends Reward {
         }
     }
 
+    @Override
+    public void onCollideWithPlayer() {
+        if (isExpired()) return;
+            
+        super.onCollideWithPlayer();
+    }
+
     public boolean isExpired() {
         return timeToLive <= 0 && !collected;
     }

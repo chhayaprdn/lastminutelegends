@@ -34,6 +34,7 @@ public class Game {
     private List<GameSystem> systems;
     private List<GameRenderer> renderers;
     private List<Entity> entities;
+    private List<Entity> markedEntities;
     private GameState state;
     private int tick;
     private int score;
@@ -44,6 +45,7 @@ public class Game {
         this.systems = new ArrayList<>();
         this.renderers = new ArrayList<>();
         this.entities = new ArrayList<>();
+        this.markedEntities = new ArrayList<>();
         this.state = GameState.Menu;
         this.tick = 0;
         this.score = 0;
@@ -91,6 +93,11 @@ public class Game {
             system.tick(this.tick);
         }
 
+        if (!markedEntities.isEmpty()) {
+            entities.removeAll(markedEntities);
+            markedEntities.clear();
+        }
+        
         this.tick++;
     }
 
@@ -168,6 +175,10 @@ public class Game {
 
     public List<Entity> getEntities() {
         return entities;
+    }
+    
+    public List<Entity> getMarkedEntities() {
+        return markedEntities;
     }
 
     public int getScore() {
