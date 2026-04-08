@@ -101,4 +101,12 @@ public class BonusRewardTest {
         BonusReward reward = new BonusReward(pos, 50, 10);
         assertEquals(pos, reward.getPosition());
     }
+
+    @Test
+    void rewardThatIsCollectedAndTickedToZeroIsNotExpired() {
+        BonusReward reward = new BonusReward(new Position(0, 0), 50, 1);
+        reward.collect();
+        reward.onTick(null, null); // TTL hits 0 but collected = true
+        assertFalse(reward.isExpired());
+}
 }

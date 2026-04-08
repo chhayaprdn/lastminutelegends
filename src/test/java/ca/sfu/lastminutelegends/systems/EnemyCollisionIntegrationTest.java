@@ -35,10 +35,11 @@ public class EnemyCollisionIntegrationTest {
         Game.instance().getEntities().clear();
         Game.instance().setState(GameState.Playing);
         Game.instance().setPlayer(null);
-        Game.instance().setBoard(null);
 
         enemySystem = new EnemySystem();
         collisionSystem = new CollisionDetectionSystem();
+        Board board = TestUtils.makeBoard("....");
+        Game.instance().setBoard(board);
     }
 
     /**
@@ -47,9 +48,6 @@ public class EnemyCollisionIntegrationTest {
      */
     @Test
     void enemyReachesPlayerAndGameBecomesLost() {
-        Board board = TestUtils.makeBoard("...");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(2, 0));
         MovingEnemy enemy = new MovingEnemy(new Position(1, 0));
 
@@ -69,9 +67,6 @@ public class EnemyCollisionIntegrationTest {
      */
     @Test
     void enemyDoesNotReachPlayerAndGameRemainsPlaying() {
-        Board board = TestUtils.makeBoard("....");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(3, 0));
         MovingEnemy enemy = new MovingEnemy(new Position(0, 0));
 

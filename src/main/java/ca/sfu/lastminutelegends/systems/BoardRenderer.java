@@ -29,9 +29,9 @@ public class BoardRenderer implements GameSystem {
             for (int x = 0; x < Game.instance().getBoard().getWidth(); x++) {
                 Cell cell = Game.instance().getBoard().getCell(x, y);
 
-                int xPos = Game.instance().getBoardOffsetX() + x * Game.instance().getCellSize();
-                int yPos = Game.instance().getBoardOffsetY() + y * Game.instance().getCellSize();
-                int size = Game.instance().getCellSize();
+                int xPos = Game.instance().getCanvas().getBoardOffsetX() + x * Game.instance().getCanvas().getCellSize();
+                int yPos = Game.instance().getCanvas().getBoardOffsetY() + y * Game.instance().getCanvas().getCellSize();
+                int size = Game.instance().getCanvas().getCellSize();
 
                 BufferedImage texture;
                 

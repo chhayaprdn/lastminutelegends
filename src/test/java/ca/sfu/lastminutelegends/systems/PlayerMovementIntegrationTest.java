@@ -28,6 +28,7 @@ public class PlayerMovementIntegrationTest {
 
     private InputSystem inputSystem;
     private PlayerSystem playerSystem;
+    private Board board;
 
     /**
      * Resets shared game state before each test.
@@ -37,12 +38,13 @@ public class PlayerMovementIntegrationTest {
         Game.instance().getEntities().clear();
         Game.instance().setState(GameState.Playing);
         Game.instance().setPlayer(null);
-        Game.instance().setBoard(null);
 
         // A plain Swing component is enough for constructing InputSystem in tests.
         java.awt.Panel dummyPanel = new java.awt.Panel();
         inputSystem = new InputSystem(dummyPanel);
         playerSystem = new PlayerSystem(inputSystem);
+        board = TestUtils.makeBoard("...");
+        Game.instance().setBoard(board);
     }
 
     /**
@@ -61,9 +63,6 @@ public class PlayerMovementIntegrationTest {
      */
     @Test
     void validInputMovesPlayer() throws Exception {
-        Board board = TestUtils.makeBoard("...");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(1, 0));
         Game.instance().setPlayer(player);
         Game.instance().getEntities().add(player);
@@ -79,7 +78,7 @@ public class PlayerMovementIntegrationTest {
      */
     @Test
     void inputDoesNotMovePlayerIntoWall() throws Exception {
-        Board board = TestUtils.makeBoard(".#.");
+        board = TestUtils.makeBoard(".#.");
         Game.instance().setBoard(board);
 
         Player player = new Player(new Position(0, 0));
@@ -97,9 +96,6 @@ public class PlayerMovementIntegrationTest {
      */
     @Test
     void inputDoesNotMovePlayerOutsideBoard() throws Exception {
-        Board board = TestUtils.makeBoard("...");
-        Game.instance().setBoard(board);
-
         Player player = new Player(new Position(0, 0));
         Game.instance().setPlayer(player);
         Game.instance().getEntities().add(player);
