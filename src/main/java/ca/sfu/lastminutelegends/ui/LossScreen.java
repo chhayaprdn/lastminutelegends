@@ -1,6 +1,7 @@
 package ca.sfu.lastminutelegends.ui;
 
 import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameFonts;
 
 import java.awt.*;
 
@@ -14,13 +15,13 @@ public class LossScreen implements Screen {
         g.fillRect(0, 0, canvasWidth, canvasHeight);
 
         g.setColor(Color.RED);
-        g.setFont(new Font("Arial", Font.BOLD, 100));
+        g.setFont(GameFonts.headline(100f));
         FontMetrics fm = g.getFontMetrics();
         String lostText = "YOU LOST";
         g.drawString(lostText, canvasWidth / 2 - fm.stringWidth(lostText) / 2, canvasHeight / 2);
         
         g.setColor(Color.GRAY);
-        g.setFont(new Font("Arial", Font.PLAIN, 28));
+        g.setFont(GameFonts.body(28f));
         fm = g.getFontMetrics();
         String timer = String.format("TIMER: %d:%02d", Game.instance().getTimer() / 60, Game.instance().getTimer() % 60);
         String score = String.format("SCORE: %d", Game.instance().getScore());

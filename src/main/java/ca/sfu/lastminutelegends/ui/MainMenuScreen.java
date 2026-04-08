@@ -1,6 +1,7 @@
 package ca.sfu.lastminutelegends.ui;
 
 import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameFonts;
 
 import java.awt.*;
 
@@ -14,14 +15,12 @@ public class MainMenuScreen implements Screen {
         g.fillRect(0, 0, canvasWidth, canvasHeight);
         
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 100));
+        String title = "LAST-MINUTE LEGENDS";
+        g.setFont(GameFonts.headline(48f));
         FontMetrics fm = g.getFontMetrics();
-        String firstTitleLine = "LAST-MINUTE";
-        String secondTitleLine = "LEGENDS";
-        g.drawString(firstTitleLine, canvasWidth / 2 - fm.stringWidth(firstTitleLine) / 2, 350);
-        g.drawString(secondTitleLine, canvasWidth / 2 - fm.stringWidth(secondTitleLine) / 2, 350 + fm.getHeight() - 25);
+        g.drawString(title, canvasWidth / 2 - fm.stringWidth(title) / 2, 350);
         
-        g.setFont(new Font("Arial", Font.PLAIN, 28));
+        g.setFont(GameFonts.body(28f));
         fm = g.getFontMetrics();
         String enterLine = "Press ENTER to Start";
         g.drawString(enterLine, canvasWidth / 2 - fm.stringWidth(enterLine) / 2, 600);

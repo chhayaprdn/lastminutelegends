@@ -1,6 +1,7 @@
 package ca.sfu.lastminutelegends.systems;
 
 import ca.sfu.lastminutelegends.Game;
+import ca.sfu.lastminutelegends.GameFonts;
 
 import java.awt.*;
 
@@ -16,7 +17,7 @@ public class HudRenderer implements GameSystem {
     @Override
     public void render(Graphics g) {
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Arial", Font.BOLD, 24));
+        g.setFont(GameFonts.headline(24f));
         FontMetrics fm = g.getFontMetrics();
         
         String timer = String.format("TIMER: %d:%02d", Game.instance().getTimer() / 60, Game.instance().getTimer() % 60);
