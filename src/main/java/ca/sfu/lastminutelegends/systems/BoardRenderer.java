@@ -2,11 +2,10 @@ package ca.sfu.lastminutelegends.systems;
 
 import ca.sfu.lastminutelegends.Game;
 import ca.sfu.lastminutelegends.board.*;
+import ca.sfu.lastminutelegends.ui.TextureLoader;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 public class BoardRenderer implements GameSystem {
     private static final BufferedImage WALL_TEXTURE;
@@ -14,13 +13,9 @@ public class BoardRenderer implements GameSystem {
     private static final BufferedImage DOOR_TEXTURE;
     
     static {
-        try {
-            WALL_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/wall.png"));
-            FLOOR_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/floor.png"));
-            DOOR_TEXTURE = ImageIO.read(BoardRenderer.class.getResourceAsStream("/textures/door.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        WALL_TEXTURE = TextureLoader.load("wall.png");
+        FLOOR_TEXTURE = TextureLoader.load("floor.png");
+        DOOR_TEXTURE = TextureLoader.load("door.png");
     }
     
     @Override

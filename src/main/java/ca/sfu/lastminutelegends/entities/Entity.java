@@ -3,6 +3,7 @@ package ca.sfu.lastminutelegends.entities;
 import ca.sfu.lastminutelegends.board.Board;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Abstract base class for all game entities.
@@ -30,8 +31,27 @@ public abstract class Entity {
         // Default implementation does nothing
     }
     
+    protected abstract BufferedImage getTexture();
+    
     /**
      * Render the entity on the game canvas
+     * 
+     * @param g        the graphics context
+     * @param cellSize pixel size of one board cell
+     * @param offsetX  horizontal pixel offset of the board origin
+     * @param offsetY  vertical pixel offset of the board origin
      */
-    public abstract void render(Graphics g, int cellSize, int offsetX, int offsetY);
+    public void render(Graphics g, int cellSize, int offsetX, int offsetY) {
+        if (getTexture() == null)
+            return;
+        
+        g.drawImage(
+            getTexture(),
+            offsetX + position.x * cellSize,
+            offsetY + position.y * cellSize,
+            cellSize,
+            cellSize,
+            null
+        );
+    }
 }
