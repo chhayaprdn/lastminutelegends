@@ -2,11 +2,9 @@ package ca.sfu.lastminutelegends.entities;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 
 import ca.sfu.lastminutelegends.board.Board;
-
-import javax.imageio.ImageIO;
+import ca.sfu.lastminutelegends.ui.TextureLoader;
 
 /**
 * A bonus reward (coffee) that spawns randomly and disappears after a fixed number
@@ -16,11 +14,7 @@ public class BonusReward extends Reward {
     private static final BufferedImage TEXTURE;
 
     static {
-        try {
-            TEXTURE = ImageIO.read(BonusReward.class.getResourceAsStream("/textures/bonusReward.png"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        TEXTURE = TextureLoader.load("bonusReward.png");
     }
     
     private int timeToLive;
@@ -49,7 +43,7 @@ public class BonusReward extends Reward {
             timeToLive--;
         }
     }
-    
+
     public boolean isExpired() {
         return timeToLive <= 0 && !collected;
     }
@@ -57,6 +51,12 @@ public class BonusReward extends Reward {
     public float getTimeRemainingPercentage() {
         return (float) timeToLive / maxTTL;
     }
+    
+    @Override
+    protected BufferedImage getTexture() {
+        return TEXTURE;
+    }
+    
     /**
      * Renders the reward as a fading coffee-brown square with a countdown.
      * Nothing is drawn if collected or expired.
