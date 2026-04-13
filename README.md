@@ -4,10 +4,19 @@ A 2D maze game built with Java and Swing.
 Play as a student trying to escape deadlines by collecting all
 school supplies and reaching the exit before the enemies catch you.
 
+### Overview/Tutorial
+
 A short video demonstrating the gameplay and key features of our game 
 can be found at the following link:  
 
 https://youtu.be/klDdKuBAhUM?si=KlGU-rjbJwbXQcKO
+
+##### Controls
+- ENTER: to start the game
+- W/Up Arrow: To move up
+- A/Left Arrow: to move left
+- S/Down Arrow: to move down
+- D/Right Arrow: to move right
 
 ### Requirements
 - Java 21+
