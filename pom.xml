@@ -35,6 +35,21 @@
                 <version>3.13.0</version>
             </plugin>
 
+            <!-- JAR with dependencies -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>ca.sfu.lastminutelegends.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <finalName>last-minute-legends</finalName>
+                </configuration>
+            </plugin>
+
             <!-- Run tests -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -64,6 +79,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Javadocs -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.6.3</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/javadoc</outputDirectory>
+                    <failOnError>false</failOnError>
+                </configuration>
             </plugin>
 
             <!-- Run main -->
