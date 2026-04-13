@@ -4,6 +4,10 @@ A 2D maze game built with Java and Swing.
 Play as a student trying to escape deadlines by collecting all
 school supplies and reaching the exit before the enemies catch you.
 
+A short video demonstrating the gameplay and key features of our game 
+can be found at the following link:
+https://youtu.be/klDdKuBAhUM?si=KlGU-rjbJwbXQcKO
+
 ### Requirements
 - Java 21+
 - Maven 3.9+
