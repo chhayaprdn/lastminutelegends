@@ -5,7 +5,7 @@ Play as a student trying to escape deadlines by collecting all
 school supplies and reaching the exit before the enemies catch you.
 
 ### Requirements
-- Java 25
+- Java 21+
 - Maven 3.9+
 
 ### Build
@@ -14,7 +14,17 @@ To build the project run `mvn compile`
 ### Run
 To run the game run `mvn compile exec:java`
 
-### Test
-To run the test suite run `mvn compile test`
+### Run from JAR
+To build and run the JAR:
+```
+mvn clean package
+java -jar target/last-minute-legends.jar
+```
 
-To generate a coverage report run `mvn compile verify`. The coverage report will be at `target/site/jacoco/index.html`
+### Test
+To run the test suite run `mvn test`
+
+To generate a coverage report run `mvn verify`. The coverage report will be at `target/site/jacoco/index.html`
+
+### Javadocs
+To generate the Javadocs run `mvn javadoc:javadoc`. The documentation will be at `target/javadoc/index.html`
